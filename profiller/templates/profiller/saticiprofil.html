@@ -1,0 +1,142 @@
+{% extends 'main/base.html' %}
+
+{% block title %} {% firstof user.get_full_name user.username %}{% endblock %}
+{% block content %}
+<h1 class="flex flex-wrap shadow-lg rounded justify-center text-2xl text-orange-400 font-medium bg-gray-100 mt-2 py-2">'{% firstof user.get_full_name user.username %}' satıcısı ürünleri</h1>
+
+<h1 class="flex flex-wrap shadow-lg rounded justify-between text-xl text-primary font-medium bg-gray-100 mt-2 px-8 py-2">
+    <a href = "{% url 'profiller' user.id %}?name=1" class = "flex px-2 py-1 hover:bg-gray-200 transition duration-500">Puana Göre
+        <svg class="h-7 w-7 text-blue-400"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <line x1="12" y1="5" x2="12" y2="19" />  <line x1="16" y1="9" x2="12" y2="5" />  <line x1="8" y1="9" x2="12" y2="5" /></svg>
+    </a>
+    <a href = "{% url 'profiller' user.id %}?name=2" class = "flex px-2 py-1 hover:bg-gray-200 transition duration-500">Eskiden Yeniye
+        <svg class="h-7 w-7 text-blue-400"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <line x1="12" y1="5" x2="12" y2="19" />  <line x1="16" y1="9" x2="12" y2="5" />  <line x1="8" y1="9" x2="12" y2="5" /></svg>
+    </a>
+    <a href = "{% url 'profiller' user.id %}?name=3" class = "flex px-2 py-1 hover:bg-gray-200 transition duration-500">Yeniden Eskiye
+        <svg class="h-7 w-7 text-blue-400"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <line x1="12" y1="5" x2="12" y2="19" />  <line x1="16" y1="15" x2="12" y2="19" />  <line x1="8" y1="15" x2="12" y2="19" /></svg>
+    </a>
+    <a href = "{% url 'profiller' user.id %}?name=4" class = "flex px-2 py-1 hover:bg-gray-200 transition duration-500">Artan Fiyat
+        <svg class="h-7 w-7 text-blue-400"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <line x1="12" y1="5" x2="12" y2="19" />  <line x1="16" y1="9" x2="12" y2="5" />  <line x1="8" y1="9" x2="12" y2="5" /></svg>
+    </a>
+    <a href = "{% url 'profiller' user.id %}?name=5" class = "flex px-2 py-1 hover:bg-gray-200 transition duration-500">Azalan Fiyat
+        <svg class="h-7 w-7 text-blue-400"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <line x1="12" y1="5" x2="12" y2="19" />  <line x1="16" y1="15" x2="12" y2="19" />  <line x1="8" y1="15" x2="12" y2="19" /></svg>
+    </a>
+    <a href = "{% url 'profiller' user.id %}?name=6" class = "px-2 text-primary-600 py-1 hover:bg-gray-200 transition duration-500">Sıfırla</a>
+</h1>
+
+<div class = "flex flex-wrap">
+    {% for urun in urunler %}
+    {% if urun.premium == True %}
+        <div class="urun w-1/4 p-2">
+            <div class="p-3 bg-gray-100">
+                <a href="{% url 'pazar' urun.category.slug urun.slug %}">
+                    {% if urun.image %}
+                        <div class="image">
+                            <img src="{{ urun.image.url }}" alt="Image of {{ urun.title }}">
+                        </div>
+                    {% endif %}
+                    <div class = "flex">
+                        <style>
+                           .turuncu {
+                             color: orange;
+                           }
+                           .gri {
+                              color: #d1d5db;
+                           }
+                           </style> 
+                           <div class = "flex py-1">
+                              <i class="fa fa-star turuncu{% if urun.average_rating|add:"0" < 1 %}-o empty gri{% endif %}"></i>
+                              <i class="fa fa-star turuncu{% if urun.average_rating|add:"0" < 2 %}-o empty gri{% endif %}"></i>
+                              <i class="fa fa-star turuncu{% if urun.average_rating|add:"0" < 3 %}-o empty gri{% endif %}"></i>
+                              <i class="fa fa-star turuncu{% if urun.average_rating|add:"0" < 4 %}-o empty gri{% endif %}"></i>
+                              <i class="fa fa-star turuncu{% if urun.average_rating|add:"0" < 5 %}-o empty gri{% endif %}"></i>
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="text-purple-400 ml-4 w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+                            </svg>
+                           </div>
+                     </div> 
+                    <h2 class="text-medium h-12 font-medium">{{ urun.title }}</h2>
+                    <p class="text-m text-gray-600">₺{{ urun.get_display_price }}</p>
+                </a>
+            </div>
+        </div>
+    {% else %}
+        <div class="urun w-1/4 p-2">
+            <div class="p-3 bg-gray-100">
+                <a href="{% url 'pazar' urun.category.slug urun.slug %}">
+                    {% if urun.image %}
+                        <div class="image">
+                            <img src="{{ urun.image.url }}" alt="Image of {{ urun.title }}">
+                        </div>
+                    {% endif %}
+                    <div class = "flex">
+                        <style>
+                        .turuncu {
+                            color: orange;
+                        }
+                        .gri {
+                            color: #d1d5db;
+                        }
+                        </style> 
+                        <div class = "flex py-1">
+                            <i class="fa fa-star turuncu{% if urun.average_rating|add:"0" < 1 %}-o empty gri{% endif %}"></i>
+                            <i class="fa fa-star turuncu{% if urun.average_rating|add:"0" < 2 %}-o empty gri{% endif %}"></i>
+                            <i class="fa fa-star turuncu{% if urun.average_rating|add:"0" < 3 %}-o empty gri{% endif %}"></i>
+                            <i class="fa fa-star turuncu{% if urun.average_rating|add:"0" < 4 %}-o empty gri{% endif %}"></i>
+                            <i class="fa fa-star turuncu{% if urun.average_rating|add:"0" < 5 %}-o empty gri{% endif %}"></i>
+                        </div>
+                    </div> 
+                    <h2 class="text-medium h-12 font-medium">{{ urun.title }}</h2>
+                    <p class="text-m text-gray-600">₺{{ urun.get_display_price }}</p>
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<div class = "bg-white w-full rounded flex justify-center font-medium font-xl">
+    <nav aria-label="Page navigation example">
+        <ul class="list-style-none flex">
+        {% if urunler.has_previous %}
+        <li>
+            <a
+            class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-gray-200 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
+            href="?page=1"
+            >İlk</a
+            >
+        </li>
+        <li>
+            <a
+            class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-gray-200 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
+            href="?page={{ urunler.previous_page_number }}"
+            >Önceki</a
+            >
+        </li>
+        {% endif %}
+        <li aria-current="page">
+            <a
+            class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
+            >Sayfa {{ urunler.number }} / {{ urunler.paginator.num_pages }}</a
+            >
+        </li>
+        {% if urunler.has_next %}
+        <li>
+            <a
+            class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-gray-200 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
+            href="?page={{ urunler.next_page_number }}"
+            >Sonraki</a
+            >
+        </li>
+        <li>
+            <a
+            class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-gray-200 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
+            href="?page={{ urunler.paginator.num_pages }}"
+            >Son</a
+            >
+        </li>
+        {% endif %}
+        </ul>
+    </nav>
+</div>
+
+{% endblock %}

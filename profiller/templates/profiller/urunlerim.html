@@ -1,0 +1,86 @@
+{% extends 'main/base.html' %}
+
+{% block title %} Ürünlerim {% endblock %}
+
+{% block content %}
+
+<div class="py-2">
+    <div class="block rounded-lg shadow-lg bg-white pb-2">
+        <div class = "flex justify-center py-3">
+            <p
+          class="justify-center flex text-center inline-block rounded w-1/2 bg-sky-600 px-6 pb-2 pt-2.5 text-lg font-medium uppercase leading-normal text-white"
+          >
+          <svg class="h-6 w-6 text-white mr-2"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1.5"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />  <line x1="3" y1="6" x2="21" y2="6" />  <path d="M16 10a4 4 0 0 1-8 0" /></svg>
+          ÜRÜN İSTATİSTİKLERİ</p>
+        </div>
+        {% if productsowned %}
+        <div class="flex flex-wrap items-center">
+            {% for product in productsowned %}
+            <div class = "py-2 flex flex-wrap w-full">
+                <div class="block bg-white w-full lg:flex grow-0 shrink-0 basis-auto lg:w-6/12 xl:w-4/12">
+                    {% if product.image %}
+                    <div class="image">
+                        <img src="{{ product.image.url }}" alt="Image of {{ product.title }}" name = "product_id" value = {{ product.id }}>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="bg-gray-100 grow-0 shrink-0 basis-auto w-full lg:w-6/12 xl:w-8/12">
+                    <div class="px-6 py-12 md:px-12">
+                        <h2 class="text-3xl font-bold mb-4 text-sky-600 display-5">{{ product.title }}</h2>
+                        <div class = "flex">
+                            <style>
+                            .turuncu {
+                            color: orange;
+                            }
+                            .gri {
+                            color: #d1d5db;
+                            }
+                            </style>
+                            <div class = "ml-3">
+                                <i class="fa fa-star turuncu{% if product.average_rating|add:"0" < 1 %}-o empty gri{% endif %}"></i>
+                                <i class="fa fa-star turuncu{% if product.average_rating|add:"0" < 2 %}-o empty gri{% endif %}"></i>
+                                <i class="fa fa-star turuncu{% if product.average_rating|add:"0" < 3 %}-o empty gri{% endif %}"></i>
+                                <i class="fa fa-star turuncu{% if product.average_rating|add:"0" < 4 %}-o empty gri{% endif %}"></i>
+                                <i class="fa fa-star turuncu{% if product.average_rating|add:"0" < 5 %}-o empty gri{% endif %}"></i>
+                            </div>
+                            <p class = "text-red-400 font-bold ml-16"> Fiyat:</p>
+                            <p class="ml-1 text-gray-500 font-bold text-green-600"> 
+                                {{ product.get_display_price }} ₺
+                            </p>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-4 mt-12 ">
+                            <div class="">
+                                <h2 class="text-3xl font-bold text-orange-400 mb-4">{{ product.average_rating }}</h2>
+                                <h5 class="text-lg font-medium text-gray-500 mb-0">Ürün Puanı</h5>
+                            </div> 
+
+                            <div class="">
+                                <h2 class="text-3xl font-bold text-orange-400 mb-4">{{ product.comment_amount }}</h2>
+                                <h5 class="text-lg font-medium text-gray-500 mb-0">Yorum Sayısı</h5>
+                            </div>
+
+                            <div class="">
+                                <h2 class="text-3xl font-bold text-purple-400 mb-4">{{ product.howmany }}</h2>
+                                <h5 class="text-lg font-medium text-gray-500 mb-0">Satılan Adet</h5>
+                            </div>
+
+                            <div class="">
+                                <h2 class="text-3xl font-bold text-green-600 mb-41">{{ product.howmuch }}₺</h2>
+                                <h5 class="mt-4 text-lg font-medium text-gray-500 mb-0">Toplam Kazanç</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+            {% endfor %}    
+        </div>
+        {% else %}
+        <div class = "flex justify-center bg-gray-100 mt-4 mx-4 my-2 py-4 px-8">
+            <p>Henüz size ait bir ürün bulunmamaktadır.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

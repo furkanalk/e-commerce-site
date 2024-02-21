@@ -1,0 +1,24 @@
+{% extends 'main/base.html'%}
+
+{% block title %}
+Onaylandı
+{% endblock %}
+
+{% block content %}
+<div class = "bg-white py-4 rounded-lg shadow-lg">
+    <div>
+        <div class = "flex justify-center">
+            <img src="{{ logo }}" class = "rounded-lg shadow-lg"style="height: 210px">
+        </div>
+        <h1 class="text-center mb-6 text-2xl text-blue-400">Alışverişiniz için teşekkür ederiz.</h1> 
+        <h2 class="text-center mb-6 text-2xl text-gray-400">Yaklaşık 3 saniye sonra anasayfaya yönlendirileceksiniz...</h2> 
+    </div>
+</div>
+
+<script>
+    setTimeout(function(){
+            window.location.href = '{% url 'anasayfa' %}';
+        }, 3000);
+</script>
+
+{% endblock %}

@@ -1,0 +1,149 @@
+{% extends 'main/base.html'%}
+{% load widget_tweaks %}
+{% block title %}
+Ödeme
+{% endblock %}
+
+{% if form.errors %}
+<div class="flex p-4 mb-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800" role="alert">
+    <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+    <span class="sr-only">Info</span>
+    <div>
+        <ul>Hata:
+            {% for field in form %}
+                {% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endif %}
+
+{% block content %}
+    <!--{{ form.as_p }}-->
+    <div class = "bg-white rounded-xl px-5 py-5 mt-5 shadow-lg">
+
+        <h1 class="justify-center grid mb-6 text-2xl">Ödeme</h1>
+
+    <h2 class="justify-center grid text-xl text-gray-500">Toplam Ücret: {{ sepet.toplam_ucret}} ₺</h2>
+
+        <form>
+            {% csrf_token %}
+            <div class = "py-5 grid justify-center"> 
+                <strong>İsim :</strong>               
+                {% render_field form.first_name placeholder="İsminizi giriniz" class+="input form-control text-sm placeholder-gray-400 pl-10 pr-4 rounded border border-gray-400 w-96 py-2 focus:outline-none focus:border-blue-400" %}
+            </div>
+            <div class = "py-5 grid justify-center">  
+                <strong>Soy isim :</strong>                
+                {% render_field form.last_name placeholder="Soy isminizi giriniz" class+="input_two form-control text-sm placeholder-gray-400 pl-10 pr-4 rounded border border-gray-400 self-center w-96 py-2 focus:outline-none focus:border-blue-400" %}
+            </div>
+            <div class = "py-5 grid justify-center">
+                <strong>Adres :</strong>                  
+                {% render_field form.address placeholder="Adres giriniz" class+="input_three form-control text-sm placeholder-gray-400 pl-10 pr-4 rounded border border-gray-400 w-96 py-2 focus:outline-none focus:border-blue-400" %}
+            </div>
+            <div class = "py-5 grid justify-center">  
+                <strong>Posta Kodu :</strong>                
+                {% render_field form.zipcode placeholder="Posta kodunuzu giriniz" class+="input_four form-control text-sm placeholder-gray-400 pl-10 pr-4 rounded border border-gray-400 w-96 py-2 focus:outline-none focus:border-blue-400" %}
+            </div>
+            <div class = "py-5 grid justify-center">   
+                <strong>Şehir :</strong>               
+                {% render_field form.city placeholder="Şehir giriniz" class+="input_five form-control text-sm placeholder-gray-400 pl-10 pr-4 rounded border border-gray-400 w-96 py-2 focus:outline-none focus:border-blue-400" %}
+            </div>
+        </form>
+        <div class ="grid justify-center">
+        <button class ="button px-40 py-4 hover:bg-white duration-500 bg-orange-400 text-white" onclick="buy(event)">Ödeme Yap</button>
+        </div>
+        <script >
+        let input = document.querySelector(".input");
+        let input_two = document.querySelector(".input_two");
+        let input_three = document.querySelector(".input_three");
+        let input_four = document.querySelector(".input_four");
+        let input_five = document.querySelector(".input_five");
+        let button = document.querySelector(".button");
+        
+        button.disabled = true;
+        button.style.background = '#fed7aa'
+        
+        input.addEventListener("change", stateHandle);
+        input_two.addEventListener("change", stateHandle);
+        input_three.addEventListener("change", stateHandle);
+        input_four.addEventListener("change", stateHandle);
+        input_five.addEventListener("change", stateHandle);
+        
+        function stateHandle() {
+            if (document.querySelector(".input").value.length == 0) {
+                button.disabled = true;
+                button.style.background = '#fed7aa'
+                return
+            }
+            if(document.querySelector(".input_two").value.length == 0){
+                button.disabled = true;
+                button.style.background = '#fed7aa'
+                return
+            }
+            if(document.querySelector(".input_three").value.length == 0){
+                button.disabled = true;
+                button.style.background = '#fed7aa'
+                return
+            }
+            if(document.querySelector(".input_four").value.length == 0){
+                button.disabled = true;
+                button.style.background = '#fed7aa'
+                return
+            }
+            if(document.querySelector(".input_five").value.length == 0){
+                button.disabled = true;
+                button.style.background = '#fed7aa'
+                return
+            }
+            button.disabled = false;
+            button.style.background = '#fb923c'
+        }
+        </script>
+    </div>
+   
+{% endblock %}
+
+{% block scripts %}
+    <script type = "application/javascript" src="https://js.stripe.com/v3/"></script>
+    <script>
+        function buy(event){
+            event.preventDefault();
+            
+            let data = {
+                'first_name': document.getElementById('id_first_name').value,
+                'last_name': document.getElementById('id_last_name').value,
+                'address': document.getElementById('id_address').value,
+                'zipcode': document.getElementById('id_zipcode').value,
+                'city': document.getElementById('id_city').value,
+            }
+
+            let stripe = Stripe('{{ pub_key }}');
+
+            fetch('/sepetim/odeme-yap/',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify(data)
+            })
+            
+            .then(function(response) {
+                return response.json()
+            })
+            .then(function(session) {
+                return stripe.redirectToCheckout({ sessionId: session.session.id })
+            })
+            .then(function(result) {
+                if(result.error){
+                    alert(result.error.message)
+                }
+            })
+            .catch(error => console.error(error));
+
+            return false;
+        }
+        
+    </script>
+{% endblock %}

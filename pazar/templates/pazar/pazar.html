@@ -1,0 +1,482 @@
+{% extends 'main/base.html'%}
+{% load widget_tweaks %}
+{% block title %}{{ product.title }}{% endblock %}
+            <!--product.get_thumbnail -->
+{% block content %}
+<div class ="flex bg-gray-200 px-5">
+   {% if product.image %}
+      <div class = "mb-4">
+         <div class="image mt-4 drop-shadow-lg overflow-hidden">
+            {% if product.image %}
+            <img src="{{ product.image.url }}"class="hover:scale-110 transition-all duration-500 rounded-xl" alt="Image of {{ product.title }}" 
+            img style="max-width: 500px;">
+            </img>
+            {% else %}
+            <img src="http://via.placeholder.com/300x300" class="hover:scale-110 transition-all duration-500 rounded-xl" alt="Image of {{ product.title }}" img style="max-width: 500px;"> <!--product.get_thumbnail-->
+            </img>
+            {% endif %}
+         </div>
+      </div>
+   {% endif %}
+
+      <div class="mx-3 bg-white shadow-lg rounded-lg my-4 -mr-1 px-4 py-4 w-full relative">
+         <div class="justify-between flex tracking-wide px-4 py-4">
+            <h2 class="text-gray-800 font-semibold mt-1" >{{ product.title }}</h2>
+            <div class = "flex flex-wrap justify-end">
+               {% if request.user.is_authenticated == True %}
+                  {% if fav %}
+                        {% if fav.status == "True" %}
+                           <a href = "{% url 'pazar' product.category.slug product.slug%}?name=1" title= "Favorilerden Çıkar" class = "absolute w-6 h-6 cursor-pointer mr-36 ">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-pink-600 hover:text-gray-400 w-6 h-6">
+                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                                 </svg>  
+                              </a>
+                        {% else %}
+                           <a href = "{% url 'pazar' product.category.slug product.slug%}?name=0" title= "Favorilere Ekle" class = "absolute w-6 h-6 cursor-pointer mr-36 ">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class=" text-gray-400 hover:text-pink-600 w-6 h-6">
+                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                              </svg>   
+                           </a>
+                        {% endif %}
+                  {% else %}
+                     <a href = "{% url 'pazar' product.category.slug product.slug%}?name=0" title= "Favorilere Ekle" class = "absolute w-6 h-6 cursor-pointer mr-36 ">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class=" text-gray-400 hover:text-pink-600 w-6 h-6">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                        </svg>   
+                     </a>
+                  {% endif %}
+               {% endif %}
+               <div class = "absolute px-2 py-auto flex">
+                  <style>
+                     .turuncu {
+                       color: orange;
+                     }
+                     .gri {
+                        color: #d1d5db;
+                     }
+                     </style> 
+                     <div class = "ml-3 justify-center py-auto">
+                        <i class="fa fa-star turuncu{% if ortalama < 1 %}-o empty gri{% endif %}"></i>
+                        <i class="fa fa-star turuncu{% if ortalama < 2 %}-o empty gri{% endif %}"></i>
+                        <i class="fa fa-star turuncu{% if ortalama < 3 %}-o empty gri{% endif %}"></i>
+                        <i class="fa fa-star turuncu{% if ortalama < 4 %}-o empty gri{% endif %}"></i>
+                        <i class="fa fa-star turuncu{% if ortalama < 5 %}-o empty gri{% endif %}"></i>
+                     </div>
+               </div> 
+            </div>
+         </div>      
+            <div class="flex border-b -mx-8 px-8 pb-3 justify-between"> 
+               <p class="px-4 text-xs text-gray-500"> Satıcı
+                  -
+                  <a href="{% url 'detaylar' product.user.id %}"> {% firstof product.user.get_full_name product.user.username %}</a>
+               </p>
+               <h3 class="flex font-bold text-lg tracking-tight mr-6">
+                  Fiyat: {{ product.get_display_price }}₺
+               </h3> 
+            </div>
+         <div class ="px-4">
+            <h4 class="mt-5 font-medium tracking-tight">
+               Ürün Açıklaması :
+            </h4>
+            <p class="text-gray-700 text-sm">
+               {% if product.description %}
+                  <p>
+                     > {{ product.description }}
+                  </p>
+               {% endif %}
+            </p>
+         </div>
+         <div class = "grid place-items-center w-full -mx-5 absolute bottom-3">
+            <a href="{% url 'sepete_ekle' product.id %}" class="flex justify-between inline-block hover:bg-white border border-orange-400 duration-500 hover:text-orange-400 px-8 py-4 bg-orange-400 text-white">
+              Sepete Ekle</a>
+         </div>
+      </div>
+</div>
+<div class = "px-2 -mt-4 mr-5 class1">
+   <div class="mx-3 bg-white shadow-lg rounded-lg my-4 px-4 py-2 w-full relative">      
+         <div class="mb-4 flex justify-center">
+            <ul class="flex flex-wrap -mb-px" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+               <li class="mr-2" role="presentation">
+                  <button class="aria-selected:border-b-orange-400 aria-selected:cursor-context-menu flex inline-block text-gray-500 hover:text-gray-600 hover:border-gray-300 rounded-t-lg py-4 px-4 text-m font-medium text-center border-transparent border-b-2 dark:hover:text-gray-300" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="true">
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+                      </svg>
+                      Genel Özellikler
+                  </button>
+               </li>
+               <li class="mr-2" role="presentation">
+                  <button class="aria-selected:border-b-orange-400 aria-selected:cursor-context-menu flex inline-block text-gray-500 hover:text-gray-600 hover:border-gray-300 rounded-t-lg py-4 px-5 text-m font-medium text-center border-transparent border-b-2 dark:text-gray-400 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                      </svg>                      
+                      Ürün Detayları
+                  </button>
+               </li>
+               <li class="mr-2" role="presentation">
+                  <button class="aria-selected:border-b-orange-400 aria-selected:cursor-context-menu flex inline-block text-gray-500 hover:text-gray-600 hover:border-gray-300 rounded-t-lg py-4 px-5 text-m font-medium text-center border-transparent border-b-2 dark:text-gray-400 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+                      </svg>
+                      Soru & Cevap
+                  </button>
+               </li>
+               <li role="presentation">
+                  <button class="aria-selected:border-b-orange-400 aria-selected:cursor-context-menu flex inline-block text-gray-500 hover:text-gray-600 hover:border-gray-300 rounded-t-lg py-4 px-9 text-m font-medium text-center border-transparent border-b-2 dark:text-gray-400 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                      </svg>
+                      Yorumlar
+                  </button>
+               </li>
+            </ul>
+         </div>
+         <div id="myTabContent">
+            <div class="p-4 rounded-lg flex" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+               <div class = "flex flex-wrap w-1/2">
+                  <div class = "flex w-1/2 py-3 px-3 w-full mx-5 my-2 rounded-lg border border-gray-200 bg-gray-100">
+                     <p class = "text-black font-medium">Marka:&nbsp</p>
+                        {% if product.brand %}
+                           <p>
+                              {{ product.brand }}
+                           </p>
+                        {% else %}
+                           <p class = "text-gray-800">
+                              Marka belirtilmemiş.
+                           </p>
+                        {% endif %}
+                  </div>
+                  <div class = "flex w-1/2 py-3 px-3 w-full mx-5 my-2 rounded-lg border border-gray-200 bg-gray-100">
+                     <p class = "text-black font-medium">Model:&nbsp</p>
+                     {% if product.model %}
+                        <p>
+                           {{ product.model }}
+                        </p>
+                     {% else %}
+                        <p class = "text-gray-800">
+                           Model belirtilmemiş.
+                        </p>
+                     {% endif %}
+                  </div>
+                  <div class = "flex w-1/2 py-3 px-3 w-full mx-5 my-2 rounded-lg border border-gray-200 bg-gray-100">
+                     <p class = "text-black font-medium">Güç Tüketimi (W):&nbsp</p>
+                     {% if product.power_consumption %}
+                        <p>
+                           {{ product.power_consumption }}
+                        </p>
+                     {% else %}
+                        <p class = "text-gray-800">
+                           Güç Tüketimi belirtilmemiş.
+                        </p>
+                     {% endif %}
+                  </div>
+               </div>
+               <div class = "flex flex-wrap w-1/2">
+                  <div class = "flex w-1/2 py-3 px-3 w-full mx-5 my-2 rounded-lg border border-gray-200 bg-gray-100">
+                     <p class = "text-black font-medium">Enerji Sınıfı:&nbsp</p>
+                     {% if product.energy_class %}
+                        <p>
+                           {{ product.energy_class }}
+                        </p>
+                     {% else %}
+                        <p class = "text-gray-800">
+                           Enerji Sınıfı belirtilmemiş.
+                        </p>
+                     {% endif %}
+                  </div>
+                  <div class = "flex w-1/2 py-3 px-3 w-full mx-5 my-2 rounded-lg border border-gray-200 bg-gray-100">
+                     <p class = "text-black font-medium">Boyut:&nbsp</p>
+                     {% if product.size %}
+                        <p>
+                           {{ product.size }}
+                        </p>
+                     {% else %}
+                        <p class = "text-gray-800">
+                           Boyut belirtilmemiş.
+                        </p>
+                     {% endif %}
+                  </div>
+                  <div class = "flex w-1/2 py-3 px-3 w-full mx-5 my-2 rounded-lg border border-gray-200 bg-gray-100">
+                     <p class = "text-black font-medium">Renk:&nbsp</p>
+                     {% if product.color %}
+                        <p>
+                           {{ product.color }}
+                        </p>
+                     {% else %}
+                        <p class = "text-gray-800">
+                           Renk belirtilmemiş.
+                        </p>
+                     {% endif %}
+                  </div>
+               </div>
+            </div>
+            <div class="p-4 rounded-lg hidden" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+               <div class = "mt-1 w-full text-center">
+                  {% if product.details %}
+                     <p>
+                        {{ product.details|safe }}
+                     </p>
+                     {% if product.detail_image %}
+                     <div class = "justify-center mt-5 items-center flex">
+                        <img src="{{ product.detail_image.url }}"
+                        img style="max-width: 800px;"></img>
+                     </div>
+                     {% endif %}
+                  {% else %}
+                  <div class = "flex justify-center">
+                     <p class = "text-gray-800 bg-gray-200 px-4 py-3 rounded-lg w-auto text-center">
+                        Detay belirtilmemiş.
+                     </p>
+                  </div>
+                  {% endif %}
+               </div>
+            </div>
+            <div class="p-4 rounded-lg hidden" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+               <div class = "bg-gray-50">
+                     <form class = "review-form" action = "{% url 'pazar' product.category.slug product.slug%}" method="POST">
+                        {% csrf_token %}
+                        <div class = "form-group flex justify-center px-5 py-3">
+                           <textarea class= "w-1/2 py-3 px-6 flex outline-none input bg-gray-200" name="question" id="id_question" placeholder="Sorunuz mu var?"></textarea>
+                        </div>                 
+                        {% if user.id is not None %}
+                        <div class = "flex justify-center">                       
+                           <button class = "mt-2 px-5 py-3 bg-orange-400 text-white hover:bg-white hover:text-orange-400 border border-orange-400 duration-500 justify-between flex primary-btn" name= "soru_gonder"> Soruyu gönder</button>
+                        </div>
+                           {% else %}
+                           <div class = "flex justify-center">
+                              <p class = "px-2 py-2 bg-orange-400 text-white w-auto rounded-lg">Soru sormak için Üye olunuz!</p>
+                           </div>
+                        {% endif %}
+                     </form>
+                     <div class = "py-3"></div>
+                     {% if questions %}
+                        {% for question in questions %}
+                           {% if question.answered == "True" %}
+                           <div class = "bg-gray-100 rounded-lg py-5 mb-5 px-5">
+                              <div class = "w-1/2 bg-gray-200 rounded-full px-3 py-2">
+                                 <p> {{ question.question }} </p>
+                              </div>
+                              <div class = "flex justify-between">
+                                 <div class = "w-1/2"></div>
+                                    <div class = "w-1/2 bg-gray-400 rounded-full px-3 py-2">
+                                       <p class = "text-white font-normal"> " {{ question.answer }} " - {% firstof product.user.get_full_name product.user.username %} </p>
+                                    </div>
+                              </div>                  
+                           </div>
+                           {% endif %}
+                        {% endfor %}
+                     {% else %}
+                        <div class = "py-4 flex justify-center">
+                           <p class = "bg-gray-200 justify-center px-4 py-3 rounded-full"> Henüz soru soran yok. </p>
+                        </div>
+                     {% endif %} 
+               </div>
+               <div class = "bg-gray-50 mt-2">
+                  <div class = "py-3 bg-white">
+                     {% if no_answer is not None %}
+                     <div class = "flex justify-center">
+                        <div class = "flex justify-center rounded-lg shadow-lg bg-gray-400 w-1/2 py-2 text-white text-medium text-xl">
+                           <p class = "flex"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-2 w-6 h-6">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337z" />
+                            </svg>
+                            Henüz cevaplanmayan sorularınız</p>
+                        </div>
+                     </div>
+                     {% endif %}
+                     {% if questions %}
+                     {% for question in questions %}
+                        {% if question.answered == "False" and question.user_id == request.user.id %}
+                        <div class = "bg-gray-100 rounded-lg py-5 mb-5 px-5">
+                           <div class = "w-1/2 bg-gray-200 rounded-full px-3 py-2">
+                              <p> {{ question.question }} </p>
+                           </div>
+                           <div class = "flex justify-between">
+                              <div class = "w-1/2"></div>
+                                 <div class = "w-1/2 bg-gray-400 rounded-full px-3 py-2">
+                                    <p class = "text-white italic font-light"> "Henüz cevaplanmamış."</p>
+                                 </div>
+                           </div>                  
+                        </div>
+                        {% endif %}
+                     {% endfor %}
+                  {% endif %} 
+                  </div>
+               </div>
+            </div>
+            <div class="p-4 -mb-4 rounded-lg hidden" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
+               {% if ortalama == 0 %}
+                  <div class = "grid justify-center py-5">
+                     <p class = "ml-2 text-center py-3 mb-3 bg-gray-200 px-3 rounded-lg"> Henüz inceleme yapılmamış.</p>
+                  </div>
+               {% endif %}
+               {% if ortalama != 0 %}
+               <div class = "flex justify-end mb-4">
+                  <div class = "px-2 py-2 flex flex-wrap border w-1/6 border-gray-300 rounded-lg">
+                     {% if ortalama != 0 %}
+                        <p class = "font-extrabold text-lg ml-2"> {{ ortalama }}</p>
+                     {% endif %}
+                        
+                     <style>
+                        .turuncu {
+                          color: orange;
+                        }
+                        .gri {
+                           color: #d1d5db;
+                        }
+                        </style>
+                        {% if ortalama != 0 %}
+                           <div class = "ml-3">
+                              <i class="fa fa-star turuncu{% if ortalama < 1 %}-o empty gri{% endif %}"></i>
+                              <i class="fa fa-star turuncu{% if ortalama < 2 %}-o empty gri{% endif %}"></i>
+                              <i class="fa fa-star turuncu{% if ortalama < 3 %}-o empty gri{% endif %}"></i>
+                              <i class="fa fa-star turuncu{% if ortalama < 4 %}-o empty gri{% endif %}"></i>
+                              <i class="fa fa-star turuncu{% if ortalama < 5 %}-o empty gri{% endif %}"></i>
+                           </div>
+                        {% else %}
+                           <div class = "ml-6">
+                              <i class="fa fa-star turuncu{% if ortalama < 1 %}-o empty gri{% endif %}"></i>
+                              <i class="fa fa-star turuncu{% if ortalama < 2 %}-o empty gri{% endif %}"></i>
+                              <i class="fa fa-star turuncu{% if ortalama < 3 %}-o empty gri{% endif %}"></i>
+                              <i class="fa fa-star turuncu{% if ortalama < 4 %}-o empty gri{% endif %}"></i>
+                              <i class="fa fa-star turuncu{% if ortalama < 5 %}-o empty gri{% endif %}"></i>
+                           </div>
+                        {% endif %}
+                  </div> 
+               </div>
+               {% endif %}
+               
+            <div class = "Burasi">
+               
+               {% for comment in comments %}
+                  <div class = "bg-gray-100 rounded-lg border border-gray-200 py-2 mb-5 px-3">
+                     <div>
+                        <style>
+                           .turuncu {
+                             color: orange;
+                           }
+                           .gri {
+                              color: #d1d5db;
+                           }
+                           </style>
+                        <div class = "flex justify-between">    
+                           <div>
+                              <i class="fa fa-star turuncu{% if comment.rate < 1 %}-o empty gri{% endif %}"></i>
+                              <i class="fa fa-star turuncu{% if comment.rate < 2 %}-o empty gri{% endif %}"></i>
+                              <i class="fa fa-star turuncu{% if comment.rate < 3 %}-o empty gri{% endif %}"></i>
+                              <i class="fa fa-star turuncu{% if comment.rate < 4 %}-o empty gri{% endif %}"></i>
+                              <i class="fa fa-star turuncu{% if comment.rate < 5 %}-o empty gri{% endif %}"></i>
+                           </div>
+                           <div>
+                              <p class = "text-gray-600 italic "> ' {% firstof comment.user.get_full_name comment.user.username %} '</p></a>
+                           </div>        
+                        </div>
+                     </div>
+                     <div>
+                        <h6 class = "mb-2 mt-2 font-medium"> {{ comment.subject }} </h4>
+                        <p> {{ comment.comment }} </p>
+                     </div>
+                     <div class = "flex justify-end">
+                        <p class = "text-gray-600 italic ">{{ comment.created_at }} </p>
+                     </div>
+                  </div>
+               {% endfor %}
+            </div>        
+         </div>
+      <script src="https://unpkg.com/@themesberg/flowbite@1.2.0/dist/flowbite.bundle.js"></script>
+   </div>
+</div>
+
+
+<div class="mx-3 bg-white shadow-lg rounded-lg px-4 w-full relative">
+      <div class="flex items-center justify-center w-full h-full py-2 sm:py-2 px-4">
+         <div class="w-full relative flex items-center justify-center">
+             <button aria-label="slide backward" class="absolute z-30 -left-4 focus:outline-none focus:bg-gray-400 focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 cursor-pointer" id="prev">
+                 <svg class="dark:text-gray-900" width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                     <path d="M7 1L1 7L7 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                 </svg>
+             </button>
+             <div class="w-full h-full mx-auto overflow-x-hidden overflow-y-hidden">
+               <div class = "flex justify-center">
+                  <p class = "font-medium text-gray-500">- Size önerdiğimiz diğer ürünler -</p>
+               </div>
+               <div class = "border-b mt-2 mb-2"></div>
+                 <div id="slider" class="h-72 flex lg:gap-8 md:gap-6 gap-14 items-center justify-start transition ease-out duration-700">
+                     {% for item in products %}
+                        {% if item.id is not product.id %}
+                        <div class="flex relative w-full ">
+                           <a href="{% url 'pazar' item.category.slug item.slug %}">
+                     
+                              <div class="image overflow-hidden flex justify-center">
+                                 {% if item.image %}
+                                 <img src="{{ item.image.url }}" style="height: 160px" class="hover:scale-105 transition-all duration-500" alt="Image of {{ item.title }}">
+                                 {% else %}
+                                 <img src="http://via.placeholder.com/300x300" class="hover:scale-105 transition-all duration-500" alt="Image of {{ product.title }}" style="height: 160px"> <!--product.get_thumbnail-->
+                                 </img>
+                                 {% endif %}
+                              </div>
+                              <style>
+                                 .turuncu {
+                                 color: orange;
+                                 }
+                                 .gri {
+                                 color: #d1d5db;
+                                 }
+                                 </style>
+                                 {% if item.user.userprofiles.premium_mu == 1 %}
+                                 <div class = "flex py-1 text-center justify-center">
+                                    <i class="fa fa-star turuncu{% if item.average_rating < 1 %}-o empty gri{% endif %}"></i>
+                                    <i class="fa fa-star turuncu{% if item.average_rating < 2 %}-o empty gri{% endif %}"></i>
+                                    <i class="fa fa-star turuncu{% if item.average_rating < 3 %}-o empty gri{% endif %}"></i>
+                                    <i class="fa fa-star turuncu{% if item.average_rating < 4 %}-o empty gri{% endif %}"></i>
+                                    <i class="fa fa-star turuncu{% if item.average_rating < 5 %}-o empty gri{% endif %}"></i>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="text-purple-400 ml-2 w-5 h-5">
+                                       <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+                                   </svg>
+                                 </div>
+                                 {% else %}
+                                 <div class = "py-1 text-center">
+                                    <i class="fa fa-star turuncu{% if item.average_rating < 1 %}-o empty gri{% endif %}"></i>
+                                    <i class="fa fa-star turuncu{% if item.average_rating < 2 %}-o empty gri{% endif %}"></i>
+                                    <i class="fa fa-star turuncu{% if item.average_rating < 3 %}-o empty gri{% endif %}"></i>
+                                    <i class="fa fa-star turuncu{% if item.average_rating < 4 %}-o empty gri{% endif %}"></i>
+                                    <i class="fa fa-star turuncu{% if item.average_rating < 5 %}-o empty gri{% endif %}"></i>
+                                 </div>
+                                 {% endif %}                         
+                              <h2 class="text-medium w-48 text-center">{{ item.title }}</h2>
+                              <p class="text-m text-gray-600 text-center">₺{{ item.get_display_price }}</p>
+                        </a>  
+                        </div>
+                        {% endif %}
+                     {% endfor %}
+                     
+                 </div>
+             </div>
+             <button aria-label="slide forward" class="absolute z-30 -right-4 right-0 focus:outline-none focus:bg-gray-400 focus:ring-2 focus:ring-offset-2 focus:ring-gray-400" id="next">
+                 <svg class="dark:text-gray-900" width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                     <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                 </svg>
+             </button>
+         </div>
+      </div>
+
+   </div>
+
+<script>
+   let defaultTransform = 0;
+function goNext() {
+    defaultTransform = defaultTransform - 498;
+    var slider = document.getElementById("slider");
+    if (Math.abs(defaultTransform) >= slider.scrollWidth / 1.7) defaultTransform = 0;
+    slider.style.transform = "translateX(" + defaultTransform + "px)";
+}
+next.addEventListener("click", goNext);
+function goPrev() {
+    var slider = document.getElementById("slider");
+    if (Math.abs(defaultTransform) === 0) defaultTransform = 0;
+    else defaultTransform = defaultTransform + 498;
+    slider.style.transform = "translateX(" + defaultTransform + "px)";
+}
+prev.addEventListener("click", goPrev);
+
+</script>
+
+{% endblock %}

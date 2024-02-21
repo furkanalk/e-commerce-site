@@ -1,0 +1,319 @@
+{% extends 'main/base.html'%}
+{% load widget_tweaks %}
+{% block title %} Siparislerim {% endblock %}
+            <!--product.get_thumbnail -->
+{% block content %}
+
+<div class = "bg-gray-100 shadow-lg rounded-lg my-4 -mr-1 px-4 py-4 w-full relative">
+    <div class = "flex justify-center">
+        <p
+      class="justify-center flex rounded w-1/2 bg-orange-400 px-6 pb-2 pt-2.5 text-lg font-medium uppercase leading-normal text-white"
+      data-te-ripple-init
+      data-te-ripple-color="light"
+      >
+      <svg class="mr-2 h-6 w-6 text-white"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <line x1="16.5" y1="9.4" x2="7.5" y2="4.21" />  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />  <polyline points="3.27 6.96 12 12.01 20.73 6.96" />  <line x1="12" y1="22.08" x2="12" y2="12" /></svg>
+      SİPARİŞLERİM</p>
+    </div>
+    
+    <div class = "flex justify-center">
+        <!--Tabs navigation-->
+        <ul
+        class="mb-4 flex list-none flex-row flex-wrap border-b-0 pl-0"
+        id="tabs-tab3"
+        role="tablist"
+        data-te-nav-ref>
+        <li role="presentation">
+            <a
+            href="#tabs-home3"
+            class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:bg-neutral-100 focus:isolate data-[te-nav-active]:border-orange-400 data-[te-nav-active]:text-orange-400 dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
+            id="tabs-home-tab3"
+            data-te-toggle="pill"
+            data-te-target="#tabs-home3"
+            data-te-nav-active
+            role="tab"
+            aria-controls="tabs-home3"
+            aria-selected="true"
+            >MEVCUT SİPARİŞLER</a
+            >
+        </li>
+        <li role="presentation">
+            <a
+            href="#tabs-profile3"
+            class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate  hover:bg-neutral-100 focus:isolate data-[te-nav-active]:border-orange-400 data-[te-nav-active]:text-orange-400 dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
+            id="tabs-profile-tab3"
+            data-te-toggle="pill"
+            data-te-target="#tabs-profile3"
+            role="tab"
+            aria-controls="tabs-profile3"
+            aria-selected="false"
+            >BEKLEYEN DEĞERLENDİRMELER</a
+            >
+        </li>
+        <li role="presentation">
+            <a
+            href="#tabs-messages3"
+            class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate  hover:bg-neutral-100 focus:isolate data-[te-nav-active]:border-orange-400 data-[te-nav-active]:text-orange-400 dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
+            id="tabs-messages-tab3"
+            data-te-toggle="pill"
+            data-te-target="#tabs-messages3"
+            role="tab"
+            aria-controls="tabs-messages3"
+            aria-selected="false"
+            >GEÇMİŞ SİPARİŞLER</a
+            >
+        </li>
+        </ul>
+    </div>
+    <!--Tabs content-->
+    <div>
+        <div
+            class="hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+            id="tabs-home3"
+            role="tabpanel"
+            data-te-tab-active
+            aria-labelledby="tabs-home-tab3">
+            {% if siparisver %}
+                    {% for siparisv in siparisver %}
+                            <div class="py-2">
+                                <div class="flex py-4 bg-white shadow">
+                                    <div class = "ml-3">
+                                        <p class = "text-gray-400"> Siparis NO: {{siparisv.id}}</p>
+                                    </div>
+                                    {% if siparisv.beyazesya.image %}
+                                        <div class="image">
+                                            <img src="{{ siparisv.beyazesya.image.url }}" alt="Image of {{ siparisv.beyazesya.title }}">
+                                        </div>
+                                    {% endif %}
+                                    <div class="w-full flex justify-center">                                            
+                                        <p class = "text-orange-500 font-medium">{{ siparisv.beyazesya.title }}</p> 
+                                        
+                                        <div class = "absolute mt-10">
+                                                <div class = "flex">
+                                                Satın alınan adet: <p class = "font-bold ml-1 text-sky-600">{{ siparisv.adet }}</p>
+                                                </div>
+                                        </div>
+                                        <div class = "flex absolute mt-20">
+                                            '<p class = "font-bold text-red-400 ml-1 mr-1"> {% firstof siparisv.beyazesya.user.get_full_name siparisv.beyazesya.user.username %}</p>' satıcısı tarafından satın alındı.
+                                        </div>
+                                        <div class = "flex absolute mt-32">
+                                            Ödenen Miktar = <p class = "font-bold ml-1 text-green-600">{{ siparisv.ucret }} ₺</p>
+                                        </div>
+                                        <div class = "bg-orange-100 px-3 py-3 flex absolute mt-44 border border-orange-400">
+                                            SİPARİŞ DURUMU = <p class = "font-bold uppercase text-orange-400 ml-1">{{ siparisv.durum }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>        
+                    {% endfor %}
+            {% else %}
+                <p class= "flex justify-center mt-4 py-4 px-8 bg-gray-200">Henüz siparişiniz yok. Haydi alışverişe!</p>
+            {% endif %}
+
+        </div>
+        <div
+            class="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+            id="tabs-profile3"
+            role="tabpanel"
+            aria-labelledby="tabs-profile-tab3">
+            {% if siparisverYorum %}
+                    {% for siparisv in siparisverYorum %}
+                            <div class="py-4 mt-4 bg-white shadow">
+                                <div class="flex py-2 ">
+                                    <div class = "ml-3">
+                                        <p class = "text-gray-400"> Siparis NO: {{siparisv.id}}</p>
+                                    </div>
+                                    {% if siparisv.beyazesya.image %}
+                                        <div class="image">
+                                            <img src="{{ siparisv.beyazesya.image.url }}" alt="Image of {{ siparisv.beyazesya.title }}">
+                                        </div>
+                                    {% endif %}
+                                    <div class="w-full flex justify-center">                                            
+                                        <p class = "text-orange-500 font-medium">{{ siparisv.beyazesya.title }}</p>
+                                        <div class = "absolute mt-10">
+                                                <div class = "flex">
+                                                Satın alınan adet: <p class = "font-bold ml-1 text-sky-600">{{ siparisv.adet }}</p>
+                                                </div>
+                                        </div>
+                                        <div class = "flex absolute mt-20">
+                                            '<p class = "font-bold text-red-400 ml-1 mr-1">{% firstof siparisv.beyazesya.user.get_full_name siparisv.beyazesya.user.username %}</p>' satıcısı tarafından satın alındı.
+                                        </div>
+                                        <div class = "flex absolute mt-32">
+                                            Ödenen Miktar = <p class = "font-bold ml-1 text-green-600">{{ siparisv.ucret }} ₺</p>
+                                        </div>
+                                        <div class = "bg-orange-100 px-3 py-3 flex absolute mt-44 border border-orange-400">
+                                            SİPARİŞ DURUMU = <p class = "font-bold ml-1 uppercase text-orange-400 ">{{ siparisv.durum }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-gray-800 font-medium place-items-center"> 
+                                    <div class = "mx-5 my-4 bg-orange-50">
+                                        <div class = "justify-center text-orange-400 py-3">
+                                            <h5 class = "flex justify-center text-uppercase">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-2 w-6 h-6">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                                                </svg>
+                                             Yorumuzu Bırakın</h4>
+                                        </div>
+                                       
+                                        <!--
+                                       {% if messages %}
+                                          {% for message in messages %}
+                                             <div class = "alert alert-{{message.tags}}" role="alert">
+                                                {{ message }}
+                                             </div>
+                                          {% endfor %}
+                                       {% endif %} 
+                                        -->
+                                       <form class = "review-form" action = "{% url 'siparislerimi_goster'%}" method="POST">
+                                          {% csrf_token %}
+                                          <div class = "form-group flex justify-center">
+                                             <input class = "mt-2 input_two w-1/2 px-2 py-2" type = "text" name= "subject" id ="id_subject" placeholder = "Başlık"/>
+                                          </div>
+                                          <div class = "form-group flex justify-center">
+                                             <textarea class= "input w-1/2 px-2 py-2" name= "comment" id="id_comment" placeholder="İçerik"></textarea>
+                                          </div>
+                                          <div class = "form-group flex justify-center py-2">
+                                            <div class = "input-rating pt-3 flex">
+                                                <strong class = "mt-3 text-uppercase"> Puanlayınız: </strong>  
+                                                <style>
+                                                    *{
+                                                        margin: 0;
+                                                        padding: 0;
+                                                    }
+                                                    .rate {
+                                                        float: left;
+                                                        height: 46px;
+                                                        padding: 0 10px;
+                                                    }
+                                                    .rate:not(:checked) > input {
+                                                        position:absolute;
+                                                        display: none;
+                                                    }
+                                                    .rate:not(:checked) > label {
+                                                        float:right;
+                                                        width:1em;
+                                                        overflow:hidden;
+                                                        white-space:nowrap;
+                                                        cursor:pointer;
+                                                        font-size:30px;
+                                                        color:#ccc;
+                                                    }
+                                                    .rate:not(:checked) > label:before {
+                                                        content: '★ ';
+                                                    }
+                                                    .rate > input:checked ~ label {
+                                                        color: #e69138;    
+                                                    }
+                                                    .rate:not(:checked) > label:hover,
+                                                    .rate:not(:checked) > label:hover ~ label {
+                                                        color: #e4b585;  
+                                                    }
+                                                    .rate > input:checked + label:hover,
+                                                    .rate > input:checked + label:hover ~ label,
+                                                    .rate > input:checked ~ label:hover,
+                                                    .rate > input:checked ~ label:hover ~ label,
+                                                    .rate > label:hover ~ input:checked ~ label {
+                                                        color: #d16b00;
+                                                    }
+                                                </style>
+                                                <div class="rate">
+                                                    <input type="radio" id="star{{ siparisv.id }}_5" name="rate" value="5" class = "bes"/>
+                                                    <label for="star{{ siparisv.id }}_5" title="5 stars">5 stars</label>
+                                                    <input type="radio" id="star{{ siparisv.id }}_4" name="rate" value="4" class = "dort"/>
+                                                    <label for="star{{ siparisv.id }}_4" title="4 stars">4 stars</label>
+                                                    <input type="radio" id="star{{ siparisv.id }}_3" name="rate" value="3" class = "uc"/>
+                                                    <label for="star{{ siparisv.id }}_3" title="3 stars">3 stars</label>
+                                                    <input type="radio" id="star{{ siparisv.id }}_2" name="rate" value="2" class = "iki"/>
+                                                    <label for="star{{ siparisv.id }}_2" title="2 stars">2 stars</label>
+                                                    <input type="radio" id="star{{ siparisv.id }}_1" name="rate" value="1" class = "bir"/>
+                                                    <label for="star{{ siparisv.id }}_1" title="1 stars">1 star</label>
+                                                  </div>                                         
+                                            </div>
+                                          </div>
+                                          {% if user.id is not None %}
+                                          <div class = "py-3 flex justify-center">
+                                            <button class = "button primary-btn px-3 py-2 bg-orange-400 text-white hover:bg-white hover:text-orange-400 transition duration-500" name= "yorum_gonder" value = "{{ siparisv.beyazesya_id }} # {{ siparisv.id }}"> Yorumu Gönder</button>
+                                          </div>
+                                          {% else %}
+                                             Yorum eklemek için giris yapiniz!
+                                          {% endif %}
+                                       </form>
+                                       <script >
+                                        let input = document.querySelector(".input");
+                                        let input_two = document.querySelector(".input_two");
+                                        let button = document.querySelector(".button");
+
+                                        button.disabled = true;
+                                        button.style.background = '#fed7aa'
+                                        
+                                        input.addEventListener("change", stateHandle);
+                                        input_two.addEventListener("change", stateHandle);
+                                        
+                                        function stateHandle() {
+                                            if (document.querySelector(".input").value.length == 0) {
+                                                button.disabled = true;
+                                                button.style.background = '#fed7aa'
+                                                return
+                                            }
+                                            if(document.querySelector(".input_two").value.length == 0){
+                                                button.disabled = true;
+                                                button.style.background = '#fed7aa'
+                                                return
+                                            }
+                                            button.disabled = false;
+                                            button.style.background = '#fb923c'
+                                        }
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>        
+                    {% endfor %}
+            {% else %}
+                <p class= "flex justify-center mt-4 py-4 px-8 bg-gray-200">Henüz yorum bekleyen bir siparişiniz yok.</p>
+            {% endif %}
+        </div>
+        <div
+            class="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+            id="tabs-messages3"
+            role="tabpanel"
+            aria-labelledby="tabs-profile-tab3">
+            {% if siparisverBitti %}
+                    {% for siparisv in siparisverBitti %}
+                            <div class="py-2">
+                                <div class="flex py-4 bg-white shadow">
+                                    <div class = "ml-3">
+                                        <p class = "text-gray-400"> Siparis NO: {{siparisv.id}}</p>
+                                    </div>
+                                    {% if siparisv.beyazesya.image %}
+                                        <div class="image">
+                                            <img src="{{ siparisv.beyazesya.image.url }}" alt="Image of {{ siparisv.beyazesya.title }}">
+                                        </div>
+                                    {% endif %}
+                                    <div class="w-full flex justify-center">                                            
+                                        <p class = "text-orange-500 font-medium">{{ siparisv.beyazesya.title }}</p>
+                                        <div class = "absolute mt-10">
+                                                <div class = "flex">
+                                                Satın alınan adet: <p class = "font-bold ml-1 text-sky-600">{{ siparisv.adet }}</p>
+                                                </div>
+                                        </div>
+                                        <div class = "flex absolute mt-20">
+                                            '<p class = "font-bold text-red-400 ml-1 mr-1">{% firstof siparisv.beyazesya.user.get_full_name siparisv.beyazesya.user.username %}</p>' satıcısı tarafından satın alındı.
+                                        </div>
+                                        <div class = "flex absolute mt-32">
+                                            Ödenen Miktar = <p class = "font-bold ml-1 text-green-600">{{ siparisv.ucret }} ₺</p>
+                                        </div>
+                                        <div class = "bg-orange-100 px-3 py-3 flex absolute mt-44 border border-orange-400">
+                                            SİPARİŞ DURUMU = <p class = "font-bold ml-1 uppercase text-orange-400 ">{{ siparisv.durum }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>        
+                    {% endfor %}
+            {% else %}
+                <p class= "flex justify-center mt-4 py-4 px-8 bg-gray-200">Henüz tamamlanan bir siparişiniz yok.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

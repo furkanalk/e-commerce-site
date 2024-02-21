@@ -1,0 +1,68 @@
+{% extends 'main/base.html' %}
+{% load widget_tweaks %}
+{% block title %} Hesabım {% endblock %}
+
+{% block content %}
+<!--<img src = "{{ profilim }}" width="150" height="500" class="ml-auto mr-auto -mt-2"></img>-->
+{% if form.errors %}
+<div class="flex p-4 mb-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800" role="alert">
+    <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+    <span class="sr-only">Info</span>
+    <div>
+        <ul>Hata:
+            {% for field in form %}
+                {% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endif %}
+
+<div class="py-2">
+    <div class = "bg-white rounded-xl px-5 py-5 mt-5 shadow-lg">
+            <h1 class="flex justify-center mb-6 text-2xl">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-2 w-8 h-8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Profil Bilgilerim</h1>
+        
+
+        <form method = "POST" action="." enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class = "py-5 grid justify-center"> 
+                <strong>Kullanıcı Adı :</strong>               
+                {% render_field form.username placeholder="İsminizi giriniz" class+="form-control text-sm placeholder-gray-400 pl-10 pr-4 rounded border border-gray-400 w-96 py-2 focus:outline-none focus:border-blue-400" %}
+            </div>
+            <div class = "py-5 grid justify-center">  
+                <strong>İsim :</strong>                
+                {% render_field form.first_name placeholder="İsminizi giriniz" class+="form-control text-sm placeholder-gray-400 pl-10 pr-4 rounded border border-gray-400 w-96 py-2 focus:outline-none focus:border-blue-400" %}
+            </div>
+            <div class = "py-5 grid justify-center">
+                <strong>Soy İsim :</strong>                  
+                {% render_field form.last_name placeholder="Soy isminizi giriniz" class+="form-control text-sm placeholder-gray-400 pl-10 pr-4 rounded border border-gray-400 self-center w-96 py-2 focus:outline-none focus:border-blue-400" %}
+            </div>
+            <div class = "py-5 grid justify-center">  
+                <strong>E-Mail :</strong>                
+                {% render_field form.email placeholder="Posta kodunuzu giriniz" class+="form-control text-sm placeholder-gray-400 pl-10 pr-4 rounded border border-gray-400 w-96 py-2 focus:outline-none focus:border-blue-400" %}
+            </div>
+            <div class = "py-5 grid justify-center">   
+                <strong>Şifre :</strong>               
+                {% render_field form.password1 placeholder="********" class+="form-control text-sm placeholder-gray-400 pl-10 pr-4 rounded border border-gray-400 w-96 py-2 focus:outline-none focus:border-blue-400" %}
+            </div>
+            <div class = "py-5 grid justify-center">   
+                <strong>Şifre (Tekrar) :</strong>               
+                {% render_field form.password2 placeholder="********" class+="form-control text-sm placeholder-gray-400 pl-10 pr-4 rounded border border-gray-400 w-96 py-2 focus:outline-none focus:border-blue-400" %}
+            </div>
+            {% if user.userprofiles %}
+            <div class = "py-5 grid justify-center">               
+                {{ form_photo }}
+            </div>
+            {% endif %}
+            <div class ="grid justify-center">
+                <button class ="px-44 py-4 hover:bg-white border border-orange-400 duration-500 hover:text-orange-400 bg-orange-400 text-white" type="submit">Kaydet</button>
+            </div>
+        </form>   
+    </div>
+</div>
+
+{% endblock %}

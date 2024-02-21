@@ -1,0 +1,416 @@
+{% load static %}
+{% static 'logo.ico' as logo %}
+{% static 'slogan2.ico' as slogan %}
+{% static 'pazarim.ico' as pazarim %}
+{% static 'profilim.ico' as profilim %}
+{% static 'sepetim.ico' as sepetim %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/ico" href="{{ logo }}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>        
+        {%block title%} 
+        {%endblock%} 
+        - Türkiye'nin Beyaz Esya Ticaret Sitesi!
+    </title> 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{% static 'fontawesomefree/js/fontawesome.js' %}"></script>
+    <script src="{% static 'fontawesomefree/js/solid.js' %}"></script>
+    <script src="{% static 'fontawesomefree/js/brands.js' %}"></script>
+ <link
+  href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap"
+  rel="stylesheet" />
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css" />
+<script src="https://cdn.tailwindcss.com/3.3.0"></script>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      fontFamily: {
+        sans: ["Roboto", "sans-serif"],
+        body: ["Roboto", "sans-serif"],
+        mono: ["ui-monospace", "monospace"],
+      },
+    },
+    corePlugins: {
+      preflight: false,
+    },
+  };
+</script>
+
+</head>
+
+  <body>
+    <body style="background-color:#e5e7eb">
+    <!-- #cdd9fe -->
+      <nav class = "relative max-w-6xl mx-auto py-5 px-10 flex items-center bg-[#8abcd7]">
+          <div class = "flex-shrink-0">
+            <a href="{% url 'anasayfa' %}">
+            <img
+              src="{{ slogan }}"
+              style="height: 80px">
+            </a>      
+          </div>
+          <nav class = "w-80 border-2 border-orange-300 ml-20">
+            <div class = "Arama">
+              <form method="get" action="/arama/" class="flex items-center">
+                <div class = "bg-white">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-orange-300 items-start">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 15.75l-2.489-2.489m0 0a3.375 3.375 0 10-4.773-4.773 3.375 3.375 0 004.774 4.774zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>                                 
+                <input type="search" name="query" value = "{{ query }}" placeholder="Ürün,kategori,marka ara" class="w-80 py-2 px-1 hover:bg-white outline-none text-black">              
+                <button title = "Arama Yap">
+                  <div class ="px-3 py-2 items-end bg-orange-300 text-white font-bold ">ARA</div>
+                </button>                                 
+              </form>
+          </nav>
+          
+          <div class = "menu flex space-x-10 items-center ml-40 absolute right-10">
+            {% if request.user.is_authenticated %}
+              <a href="{% url 'sepeti_goster' %}" class ="py-2 px-4 btn relative inline-flex items-center justify-start overflow-hidden font-medium transition-all bg-white border-4 border-orange-200 border-orange-500/50 rounded hover:bg-white group ">
+                <span class="w-56 h-48 rounded bg-orange-300 absolute bottom-0 left-0 translate-x-full ease-out duration-500 transition-all translate-y-full mb-9 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
+                <span class="relative w-full text-left text-orange-400 transition-colors duration-300 ease-in-out group-hover:text-white flex">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                  </svg>
+                  {% if sepet|length %}
+                    <span>({{ sepet|length }})</span>
+                  {% endif %}
+                </span>
+              </a>
+              
+              {% if request.user.userprofiles.satici_mi %}
+                <a href="{% url 'pazarim' %}" class ="py-2 px-4 btn relative inline-flex items-center justify-start overflow-hidden font-medium transition-all bg-white border-4 border-orange-200 border-orange-500/50 rounded hover:bg-white group ">
+                  <span class="w-56 h-48 rounded bg-orange-300 absolute bottom-0 left-0 translate-x-full ease-out duration-500 transition-all translate-y-full mb-9 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
+                  <span class="relative w-full text-left text-orange-400 transition-colors duration-300 ease-in-out group-hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z" />
+                    </svg>                          
+                  </span>
+                </a>
+              {% endif %}
+              
+              <a href="{% url 'profil' %}" class ="py-2 px-4 btn relative inline-flex items-center justify-start overflow-hidden font-medium transition-all bg-white border-4 border-orange-200 border-orange-500/50 rounded hover:bg-white group">
+                <span class="w-56 h-48 rounded bg-orange-300 absolute bottom-0 left-0 translate-x-full ease-out duration-500 transition-all translate-y-full mb-9 ml-9 group-hover:ml-0 group-hover:mb-32 group-hover:translate-x-0"></span>
+                <span class="relative w-full text-left text-orange-400 transition-colors duration-300 ease-in-out group-hover:text-white">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                </span>
+              </a>
+            {% endif %}
+              
+            {% if request.user.is_authenticated == False %}
+            <div class="group relative z-[1000]">
+              <button class="py-2 px-6 btn relative inline-flex items-center justify-start overflow-hidden font-medium transition-all bg-white border-4 border-orange-200 border-orange-500/50 rounded hover:bg-orange-200 group">
+                <span class="mr-1 hover:text-white"></span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 text-orange-400">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+              </button>
+              <ul class="text-center rounded absolute hidden text-gray-700 group-hover:block w-full border-2 border-orange-300 bg-white">
+                <a href="/girisyap/">
+                  <li class="inline-flex py-2 px-1 pl-2 text-center w-full h-full btn relative text-s bg-white hover:bg-orange-200 group cursor-pointer text-orange-400 font-sans">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                    </svg>
+                    Giriş
+                  </li>
+                </a>
+                <a href="/kayitol/">
+                  <li class="inline-flex w-full h-full text-center pl-3 py-2 px-1 btn relative text-s bg-white hover:bg-orange-200 group cursor-pointer text-orange-400 font-sans">
+                    <svg class="h-5 w-5 text-orange-400" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> 
+                      <path stroke="none" d="M0 0h24v24H0z"/> 
+                      <circle cx="9" cy="7" r="4" />  
+                      <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /> 
+                      <path d="M16 11h6m-3 -3v6" />
+                    </svg>
+                    Kayıt
+                  </li>
+                </a>
+              </ul>
+            </div>
+            {% endif %}
+      </nav>
+      <div class ="max-w-6xl mx-auto">
+          <nav
+          class="relative flex w-full items-center justify-between bg-neutral-50 py-2 text-neutral-600 shadow-lg dark:bg-neutral-700 dark:text-neutral-300 dark:shadow-black/5 lg:flex-wrap lg:justify-start"
+          data-te-navbar-ref>
+            <div class="px-6 flex w-full flex-wrap">
+              <button
+                class="border-0 bg-transparent py-1 text-xl leading-none transition-shadow duration-150 ease-in-out hover:text-neutral-700 focus:text-neutral-700 dark:hover:text-white dark:focus:text-white lg:hidden"
+                type="button"
+                data-te-collapse-init
+                data-te-target="#navbarSupportedContentZ"
+                aria-controls="navbarSupportedContentZ"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="[&>svg]:w-8">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="h-8 w-8">
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                  </svg>
+                </span>
+              </button>
+            <div
+              class="!visible hidden flex-grow basis-[100%] items-center lg:!flex lg:basis-auto"
+              data-te-collapse-item>
+              <div class="px-6">
+                <button
+                  class="border-0 bg-transparent py-3 text-xl leading-none transition-shadow duration-150 ease-in-out hover:text-neutral-700 focus:text-neutral-700 dark:hover:text-white dark:focus:text-white lg:hidden"
+                  type="button"
+                  data-te-collapse-init
+                  data-te-target="#navbarSupportedContentX"
+                  aria-controls="navbarSupportedContentX"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation">
+                  <span class="[&>svg]:w-8">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="h-8 w-8">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                  </span>
+                </button>
+                <div
+                  class="!visible hidden flex-grow basis-[100%] items-center lg:!flex lg:basis-auto"
+                  id="navbarSupportedContentX"
+                  data-te-collapse-item>
+                  <ul class="mr-auto flex flex-row" data-te-navbar-nav-ref>
+                    <li class="static" data-te-nav-item-ref data-te-dropdown-ref>
+                      <a
+                        class="flex items-center whitespace-nowrap py-2 pr-2  transition duration-150 ease-in-out hover:text-neutral-700 focus:text-neutral-700 dark:hover:text-white dark:focus:text-white lg:px-2"
+                        href=""
+                        data-te-ripple-init
+                        data-te-ripple-color="light"
+                        type="button"
+                        id="dropdownMenuButtonX"
+                        data-te-dropdown-toggle-ref
+                        aria-expanded="false"
+                        data-te-nav-link-ref
+                        >Beyaz Eşyalar
+                        <span class="ml-2 w-2">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            class="h-5 w-5">
+                            <path
+                              fill-rule="evenodd"
+                              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                              clip-rule="evenodd" />
+                          </svg>
+                        </span>
+                      </a>
+                      <div
+                        class="absolute left-0 right-0 top-full z-[1000] mt-0 hidden w-full border-none bg-white bg-clip-padding text-neutral-600 shadow-lg dark:bg-neutral-700 dark:text-neutral-200 [&[data-te-dropdown-show]]:block"
+                        aria-labelledby="dropdownMenuButtonX"
+                        data-te-dropdown-menu-ref>
+                        <div class="px-6 py-5 lg:px-8">
+                          <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                            <div>
+                              <a
+                                href="/buzdolabi/"
+                                aria-current="true"
+                                class="flex border-b block w-full px-6 py-2 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-neutral-700 dark:border-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-white"
+                                >
+                                <img
+                                src="https://res.cloudinary.com/dyll4okmh/image/upload/v1685371060/media/beyazoda/categories/buzdolabi_netxqd.jpg"
+                                style="height: 30px"
+                                class="mr-2">
+                                Buzdolabı</a
+                              >
+                              <a
+                                href="/derin-dondurucu/"
+                                aria-current="true"
+                                class="flex border-b block w-full px-6 py-2 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-neutral-700 dark:border-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-white"
+                                >
+                                <img
+                                src="https://res.cloudinary.com/dyll4okmh/image/upload/v1685371059/media/beyazoda/categories/dondurucu_uyun5x.jpg"
+                                style="height: 30px"
+                                class="mr-2">
+                                Derin Dondurucu</a
+                              >
+                              <a
+                                href="/bulasik-makinesi/"
+                                aria-current="true"
+                                class="flex block w-full px-6 py-2 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-neutral-700 dark:border-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-white"
+                                >
+                                <img
+                                src="https://res.cloudinary.com/dyll4okmh/image/upload/v1685371059/media/beyazoda/categories/bulasik_a14eo3.jpg"
+                                style="height: 30px"
+                                class="mr-2">
+                                Bulaşık Makinesi</a
+                              >
+                            </div>
+                            <div>
+                              <a
+                                href="/ankastre/"
+                                aria-current="true"
+                                class="flex border-b block w-full px-6 py-2 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-neutral-700 dark:border-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-white"
+                                >
+                                <img
+                                src="https://res.cloudinary.com/dyll4okmh/image/upload/v1685371059/media/beyazoda/categories/ankastre_vi0mk2.jpg"
+                                style="height: 30px"
+                                class="mr-2">
+                                Ankastre</a
+                              >
+                              <a
+                                href="/ocak/"
+                                aria-current="true"
+                                class="flex border-b block w-full px-6 py-2 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-neutral-700 dark:border-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-white"
+                                >
+                                <img
+                                src="https://res.cloudinary.com/dyll4okmh/image/upload/v1685371059/media/beyazoda/categories/ocak_c6abi4.jpg"
+                                style="height: 30px"
+                                class="mr-2">
+                                Ocak</a
+                              >
+                              <a
+                                href="/firin/"
+                                aria-current="true"
+                                class="flex block w-full px-6 py-2 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-neutral-700 dark:border-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-white"
+                                >
+                                <img
+                                src="https://res.cloudinary.com/dyll4okmh/image/upload/v1685371059/media/beyazoda/categories/firin_oclku3.jpg"
+                                style="height: 30px"
+                                class="mr-2">
+                                Fırın</a
+                              >
+                            </div>
+                            <div>
+                              <a
+                                href="/mikrodalga-firin/"
+                                aria-current="true"
+                                class="flex border-b block w-full px-6 py-2 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-neutral-700 dark:border-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-white"
+                                >
+                                <img
+                                src="https://res.cloudinary.com/dyll4okmh/image/upload/v1685371060/media/beyazoda/categories/mikro_gzszrs.jpg"
+                                style="height: 30px"
+                                class="mr-2">
+                                Mikrodalga Fırın</a
+                              >
+                              <a
+                                href="/camasir-makinesi/"
+                                aria-current="true"
+                                class="flex border-b block w-full px-6 py-2 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-neutral-700 dark:border-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-white"
+                                >
+                                <img
+                                src="https://res.cloudinary.com/dyll4okmh/image/upload/v1685371059/media/beyazoda/categories/camasir_dxqu9r.jpg"
+                                style="height: 30px"
+                                class="mr-2">
+                                Çamaşır Makinesi</a
+                              >
+                              <a
+                                href="/kurutma-makinesi/"
+                                aria-current="true"
+                                class="flex block w-full px-6 py-2 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-neutral-700 dark:border-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-white"
+                                >
+                                <img
+                                src="https://res.cloudinary.com/dyll4okmh/image/upload/v1685371060/media/beyazoda/categories/kurutma_fchgsz.jpg"
+                                style="height: 30px"
+                                class="mr-2">
+                                Kurutma Makinesi</a
+                              >
+                            </div>
+                            <div>
+                              <a
+                                href="/tost-makinesi/"
+                                aria-current="true"
+                                class="flex border-b block w-full px-6 py-2 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-neutral-700 dark:border-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-white"
+                                >
+                                <img
+                                src="https://res.cloudinary.com/dyll4okmh/image/upload/v1685371060/media/beyazoda/categories/tost_nhtuwq.jpg"
+                                style="height: 30px"
+                                class="mr-2">
+                                Tost Makinesi</a
+                              >
+                              <a
+                                href="/blender/"
+                                aria-current="true"
+                                class="flex border-b block w-full px-6 py-2 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-neutral-700 dark:border-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-white"
+                                >
+                                <img
+                                src="https://res.cloudinary.com/dyll4okmh/image/upload/v1685371060/media/beyazoda/categories/blender_u2np9b.jpg"
+                                style="height: 30px"
+                                class="mr-2">
+                                Blender</a
+                              >
+                              <a
+                                href="/su-isiticilari/"
+                                aria-current="true"
+                                class="flex block w-full px-6 py-2 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-neutral-700 dark:border-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-white"
+                                >
+                                <img
+                                src="https://res.cloudinary.com/dyll4okmh/image/upload/v1685371060/media/beyazoda/categories/su_lar4jg.jpg"
+                                style="height: 30px"
+                                class="mr-2">
+                                Su Isıtıcısı</a
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- iconlar -->
+            <div class="relative flex items-center">
+              <a href="{% url 'siparislerimi_goster' %}">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                </svg>                
+              </a> 
+              <div class = "ml-3 "></div>
+              <a href="{% url 'favorilerim_duzenle' %}">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                </svg>
+              </a>          
+            </div>
+          </div>
+        </nav>
+        <div>
+          {% block content %}
+          {% endblock %}
+          {% block bilgi %}
+          {% endblock %}
+      </div>
+    <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
+      {% block scripts %}
+      {% endblock %}    
+  </body>
+  <footer>
+    <div class="p-6 text-center bg-gray-200">
+      <span>©</span>
+      <a
+        class="font-semibold text-neutral-600"
+        href="https://tailwind-elements.com/"
+        >Beyazoda - Güvenli alışverişin tek adresi !</a
+      >
+    </div>
+  </footer>
+</html>

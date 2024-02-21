@@ -1,0 +1,149 @@
+{% extends 'main/base.html'%}
+
+<!-- Ana Sayfa Slogan -->
+{% block title %}
+beyazoda.com
+{% endblock %}
+
+<!-- Ana Sayfa ici -->
+{% block content %}
+
+<div id="carouselExampleCaptions" class="relative" data-te-carousel-init data-te-carousel-slide>
+  <div class="relative w-full overflow-hidden after:clear-both after:block after:content-['']">
+    {% for item in images reversed %}
+    <div class="relative float-left -mr-[100%] w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none" data-te-carousel-active data-te-carousel-item style="backface-visibility: hidden">
+      <img src="{{ item.image.url }}" class="block w-full" alt="...">
+      <div class="absolute inset-x-[15%] bottom-5 hidden py-5 text-center text-white md:block">
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <button class="absolute bottom-0 left-0 top-0 z-[1] flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-white opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-white hover:no-underline hover:opacity-90 hover:outline-none focus:text-white focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none" type="button" data-te-target="#carouselExampleCaptions" data-te-slide="prev">
+    <span class="inline-block h-8 w-8">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+      </svg>
+    </span>
+  </button>
+  <button class="absolute bottom-0 right-0 top-0 z-[1] flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-white opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-white hover:no-underline hover:opacity-90 hover:outline-none focus:text-white focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none" type="button" data-te-target="#carouselExampleCaptions" data-te-slide="next">
+    <span class="inline-block h-8 w-8">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+      </svg>
+    </span>
+  </button>
+</div>
+<script>
+var carousel = document.querySelector('[data-te-carousel-init]');
+var carouselItems = carousel.querySelectorAll('[data-te-carousel-item]');
+
+var activeIndex = carouselItems.length - 1;
+
+function updateCarousel() {
+  carouselItems.forEach(function (item, index) {
+    item.style.transform = 'translateX(' + (activeIndex - index) * 100 + '%)';
+  });
+}
+
+function goToNextSlide() {
+  activeIndex = (activeIndex - 1 + carouselItems.length) % carouselItems.length;
+  updateCarousel();
+}
+
+function goToPrevSlide() {
+  activeIndex = (activeIndex + 1) % carouselItems.length;
+  updateCarousel();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  updateCarousel();
+
+  var prevButton = document.querySelector('[data-te-slide="prev"]');
+  prevButton.addEventListener('click', goToPrevSlide);
+
+  var nextButton = document.querySelector('[data-te-slide="next"]');
+  nextButton.addEventListener('click', goToNextSlide);
+});
+</script>
+
+<div class = "mx-2">
+  <h2 class = "flex justify-center bg-white rounded-lg shadow-lg text-2xl font-bold text-purple-400 mt-2 py-2 w-full">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 mr-2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+        </svg>PREMIUM ÜRÜNLER</h2>
+</div>
+
+  {% include 'pazar/urunler/preUrunler.html' %}
+
+<div class = "mx-2">
+    <h2 class = "flex justify-center bg-white rounded-lg shadow-lg text-2xl font-bold text-orange-500 mt-2 py-2 w-full">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mr-2 w-7 h-7">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z" />
+          </svg>YENİ ÜRÜNLER</h2>
+</div>
+
+  {% include 'pazar/urunler/urunler.html' %}
+
+{% endblock %}
+
+{% block bilgi %}
+
+<div class="px-3  border-t border-b py-20 bg-gray-200">
+  <div class="grid grid-cols-1 md:lg:xl:grid-cols-3 group bg-white shadow-xl shadow-neutral-100 border ">
+      <div class="p-10 flex flex-col items-center text-center group md:lg:xl:border-r hover:bg-slate-50 cursor-pointer">
+            <img
+              src="{{ logo }}"
+              style="height: 80px">
+          <p class="text-xl font-medium text-slate-700 mt-3">Beyazoda.com</p>
+          <p class="mt-2 text-sm text-slate-500">En güvenilir online beyaz eşya pazarı!</p>
+      </div>
+
+      <div class="p-10 flex flex-col items-center text-center group  md:lg:xl:border-r hover:bg-slate-50 cursor-pointer">
+          <span class="p-5 rounded-full bg-orange-100 text-white"><svg class="h-10 w-10 text-orange-400"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <line x1="3" y1="21" x2="21" y2="21" />  <path d="M3 7v1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1h-18l2 -4h14l2 4" />  <path d="M5 21v-10.15" />  <path d="M19 21v-10.15" />  <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" /></svg></span>
+          <p class="text-xl font-medium text-slate-700 mt-3">Pazarınız Hazır</p>
+          <p class="mt-2 text-sm text-slate-500">Kendi pazarınız, kendi kurallarınız.</p>
+      </div>
+
+      <div class="p-10 flex flex-col items-center text-center group hover:bg-slate-50 cursor-pointer">
+          <span class="p-5 rounded-full bg-blue-500 text-white"><svg class="h-10 w-10 text-teal-400"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />  <polyline points="22 4 12 14.01 9 11.01" /></svg>         
+          </span>
+          <p class="text-xl font-medium text-slate-700 mt-3">Güvenilir Ticaret</p>
+          <p class="mt-2 text-sm text-slate-500">Müşteri memnuniyeti önceliğimizdir.
+          </p>
+      </div>
+  </div>
+
+  {% if request.user.userprofiles.premium_mu == 1 %}
+  <div class="w-full bg-[#8abcd7] shadow-xl shadow-blue-400 py-10 px-20 flex justify-between items-center">
+    <p class=" text-white"> <span class="text-4xl font-medium text-center">Beyazoda.com ailesi olarak size teşekkür ediyoruz!</span> <br> <span class="text-lg">İyi ki varsınız&nbsp;{% firstof user.get_full_name user.username %}&nbsp;!  </span></p>
+  </div>
+  {% else %}
+    {% if premium_basvurdu is None %}
+        {% if request.user.userprofiles.satici_mi == 1 %}
+        <div class="w-full bg-purple-600 shadow-xl shadow-purple-400 py-10 px-20 flex justify-between items-center">
+            <p class=" text-white"> <span class="text-4xl font-medium">Premium mu olmak istiyorsunuz?</span> <br> <span class="text-lg">Koşulları görmek için başvurun! </span></p>
+            <a href = "{% url 'premium_basvuru' %}" class="px-5 py-3  font-medium text-slate-700 shadow-xl hover:bg-white duration-150 bg-orange-300">HEMEN BAŞVURUN </a>
+        </div>
+        {% else %}
+            {% if satici_basvurdu is None %}
+            <div class="w-full bg-[#8abcd7] shadow-xl shadow-blue-200 py-10 px-20 flex justify-between items-center">
+              <p class=" text-white"> <span class="text-4xl font-medium">Satıcı mı olmak istiyorsunuz?</span> <br> <span class="text-lg">Tek yapmanız gereken başvuru formunu doldurmak! </span></p>
+              <a href = "{% url 'satici_basvuru' %}" class="px-5 py-3  font-medium text-slate-700 shadow-xl  hover:bg-white duration-150  bg-orange-300">HEMEN BAŞVURUN </a>
+            </div>
+            {% else %}
+            <div class="w-full bg-[#8abcd7] shadow-xl shadow-blue-200 py-10 px-20 flex justify-between items-center">
+              <p class=" text-white"> <span class="text-4xl font-medium">Satıcı olmak için başvurdunuz!</span> <br> <span class="text-lg">Başvuru formunuz değerlendiriliyor. </span></p>
+              <button class="px-5 py-3  font-medium text-slate-700 shadow-xl  hover:bg-white duration-150 bg-orange-300" disabled>ONAY BEKLİYOR </button>
+            </div>
+            {% endif %}
+        {% endif %}
+    {% else %}
+    <div class="w-full bg-purple-600 shadow-xl shadow-purple-400 py-10 px-20 flex justify-between items-center">
+      <p class=" text-white"> <span class="text-4xl font-medium">Premium olmak için başvurdunuz!</span> <br> <span class="text-lg">Başvurunuz değerlendiriliyor. </span></p>
+      <button class="px-5 py-3  font-medium text-slate-700 shadow-xl  hover:bg-white duration-150 bg-orange-300" disabled>ONAY BEKLİYOR </button>
+    </div>
+    {% endif %}
+  {% endif %}  
+
+</div>
+{% endblock %}

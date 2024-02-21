@@ -1,0 +1,181 @@
+{% extends 'main/base.html' %}
+{% load widget_tweaks %}
+<!--{% block title %} {{ title }} {% endblock %}-->
+
+{% block content %}
+<div class = "bg-gray-100 shadow-lg rounded-lg my-4 -mr-1 px-4 py-4 w-full relative">
+    <h1 class ="grid justify-center text-2xl text-orange-400 font-bold">{{ product.title }}</h1>
+    <div class = "flex justify-center">
+        <!--Tabs navigation-->
+        <ul
+        class="mb-4 flex list-none flex-row flex-wrap border-b-0 pl-0"
+        id="tabs-tab3"
+        role="tablist"
+        data-te-nav-ref>
+        <li role="presentation">
+            <a
+            href="#tabs-home3"
+            class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:bg-neutral-100 focus:isolate data-[te-nav-active]:border-orange-400 data-[te-nav-active]:text-orange-400 dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
+            id="tabs-home-tab3"
+            data-te-toggle="pill"
+            data-te-target="#tabs-home3"
+            data-te-nav-active
+            role="tab"
+            aria-controls="tabs-home3"
+            aria-selected="true"
+            >DÜZENLE</a
+            >
+        </li>
+        <li role="presentation">
+            <a
+            href="#tabs-profile3"
+            class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate  hover:bg-neutral-100 focus:isolate data-[te-nav-active]:border-orange-400 data-[te-nav-active]:text-orange-400 dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
+            id="tabs-profile-tab3"
+            data-te-toggle="pill"
+            data-te-target="#tabs-profile3"
+            role="tab"
+            aria-controls="tabs-profile3"
+            aria-selected="false"
+            >SORULAR</a
+            >
+        </li>
+        <li role="presentation">
+            <a
+            href="#tabs-messages3"
+            class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate  hover:bg-neutral-100 focus:isolate data-[te-nav-active]:border-orange-400 data-[te-nav-active]:text-orange-400 dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
+            id="tabs-messages-tab3"
+            data-te-toggle="pill"
+            data-te-target="#tabs-messages3"
+            role="tab"
+            aria-controls="tabs-messages3"
+            aria-selected="false"
+            >YORUMLAR</a
+            >
+        </li>
+        </ul>
+    </div>
+    <!--Tabs content-->
+    <div>
+        <div
+            class="hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+            id="tabs-home3"
+            role="tabpanel"
+            data-te-tab-active
+            aria-labelledby="tabs-home-tab3">
+            <form method="POST" action="." enctype="multipart/form-data" class="space-y-5 ">
+                {% csrf_token %}
+                {{ form.media }}
+                {{ form.as_p }}
+
+                <div class = "flex justify-between">
+                    <button class ="hover:bg-white hover:border hover:border-orange-400 duration-500 hover:text-orange-400 px-12 py-4 bg-orange-400 text-white" type="submit" name = "duzenle" >Kaydet</button>
+                    {% if product %}
+                        <a href="{% url 'urunSil' product.id %}" class="hover:bg-white hover:border inline-block hover:border-orange-400 duration-500 hover:text-red-400 px-10 py-4 bg-red-400 text-white">Ürünü Sil</a>
+                    {% else %}
+                        <a href="/pazarim/" class="hover:bg-white hover:border inline-block hover:border-orange-400 duration-500 hover:text-red-400 px-12 py-4 bg-red-400 text-white" type="submit" name = "iptal">İptal Et</a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+        <div
+            class="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+            id="tabs-profile3"
+            role="tabpanel"
+            aria-labelledby="tabs-profile-tab3">
+            {% if questions %}
+                {% for question in questions %}
+                <div class = "bg-gray-100 rounded-lg py-5 mb-5 px-5">
+                    <div class = "w-1/2 bg-gray-200 rounded-full px-3 py-2">
+                    <p> {{ question.question }} </p>
+                    </div>
+                    <div class = "flex justify-between">
+                        <div class = "w-1/2">                                
+                        </div>
+                            {% if question.answered == "True" %}
+                            <div class = "w-1/2 bg-gray-400 rounded-full px-3 py-2">
+                                <p class = "text-white"> {{ question.answer }} </p>
+                            </div>
+                            {% else %}
+                            <div class = "w-1/2">
+                                <style>
+                                    #input:invalid + button {
+                                        opacity: 0.5;
+                                        pointer-events: none;
+                                    }
+                                </style>
+                                <form method= "post" action = "{% url 'urunDuzenle' product.id %}">
+                                    {% csrf_token %}
+                                    <textarea class= "w-full px-3 py-1 flex outline-none rounded-lg input bg-gray-200" id="input" required="required" name="answer" placeholder="Soruyu cevaplayınız."></textarea>
+                                    <button class = "mt-2 px-5 py-3 bg-orange-400 text-white hover:bg-white hover:text-orange-400 border border-orange-400 duration-500 justify-between flex primary-btn" type = "submit" name = "theanswer" value = "{{ question.id }}"> Cevabı gönder</button>
+                                </form>
+                            </div>                                        
+                            {% endif %}  
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class = "mt-10 flex justify-center">
+                    <p class = "bg-gray-200 justify-center px-4 py-3 rounded-full "> Henüz soru soran yok. </p>
+                </div>
+            {% endif %} 
+        </div>
+        <div
+            class="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+            id="tabs-messages3"
+            role="tabpanel"
+            aria-labelledby="tabs-profile-tab3">
+            {% if comments %}
+                {% for comment in comments %}
+                <div class = "bg-white rounded-lg border border-gray-200 py-2 mb-5 px-3">
+                    <div>
+                        <style>
+                        .turuncu {
+                            color: orange;
+                        }
+                        .gri {
+                            color: #d1d5db;
+                        }
+                        </style>
+                        <div class = "flex justify-between">    
+                            <div class = "flex">
+                                <i class="fa fa-star turuncu{% if comment.rate < 1 %}-o empty gri{% endif %}"></i>
+                                <i class="fa fa-star turuncu{% if comment.rate < 2 %}-o empty gri{% endif %}"></i>
+                                <i class="fa fa-star turuncu{% if comment.rate < 3 %}-o empty gri{% endif %}"></i>
+                                <i class="fa fa-star turuncu{% if comment.rate < 4 %}-o empty gri{% endif %}"></i>
+                                <i class="fa fa-star turuncu{% if comment.rate < 5 %}-o empty gri{% endif %}"></i>
+                                    {% csrf_token %}
+                                    <a href ="{% url 'urunDuzenle' product.id %}?name={{ comment.id }}">
+                                        {% if comment.reported == "True" %}
+                                        <svg class="ml-5 h-6 w-6 text-red-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                        </svg>
+                                        {% else %}
+                                        <svg class="ml-5 h-6 w-6 text-gray-400"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                        </svg>
+                                        {% endif %}
+                                    </a>
+                            </div>
+                            <div>
+                                <p class = "text-gray-600 italic "> ' {% firstof comment.user.get_full_name comment.user.username %} '</p></a>
+                            </div>     
+                        </div>   
+                    </div>
+                    <div>
+                        <h6 class = "mb-2 mt-2 font-medium"> {{ comment.subject }} </h4>
+                        <p> {{ comment.comment }} </p>
+                    </div>
+                    <div class = "flex justify-end">
+                        <p class = "text-gray-600 italic ">{{ comment.created_at }} </p>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class = "mt-10 flex justify-center">
+                    <p class = "bg-gray-200 justify-center px-4 py-3 rounded-full "> Henüz yorum yapan yok. </p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

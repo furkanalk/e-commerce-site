@@ -1,0 +1,75 @@
+{% extends 'main/base.html'%}
+
+{% block title %}
+Arama
+{% endblock %}
+
+{% block content %}
+    <div class = "mx-2">
+        <h2 class = "flex justify-center bg-white rounded-lg shadow-lg text-2xl font-bold text-gray-600 mt-2 py-2 w-full">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 mr-2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 15.75l-2.489-2.489m0 0a3.375 3.375 0 10-4.773-4.773 3.375 3.375 0 004.774 4.774zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              "{{ query }}" için arama sonucu:</h2>
+    </div>
+    {% if urunler %}
+    <div class="flex flex-wrap bg-gray-200">
+        {% for urun in urunler %}       
+            <div class="urun w-1/4 p-2">
+                <div class="p-3 bg-gray-100">
+                    <a href="{% url 'pazar' urun.category.slug urun.slug %}">
+                        
+                        <div class="image overflow-hidden">
+                            {% if urun.image %}
+                            <img src="{{ urun.image.url }}" class="hover:scale-110 transition-all duration-500" alt="Image of {{ urun.title }}"> <!--urun.get_thumbnail-->
+                            {% else %}
+                            <img src="http://via.placeholder.com/300x300" class="hover:scale-110 transition-all duration-500" alt="Image of {{ urun.title }}"> <!--urun.get_thumbnail-->
+                            {% endif %}
+                        </div>
+                        <style>
+                            .turuncu {
+                            color: orange;
+                            }
+                            .gri {
+                            color: #d1d5db;
+                            }
+                            </style>
+                            <div class = "flex py-1">
+                                <i class="fa fa-star turuncu{% if urun.average_rating|add:"0" < 1 %}-o empty gri{% endif %}"></i>
+                                <i class="fa fa-star turuncu{% if urun.average_rating|add:"0" < 2 %}-o empty gri{% endif %}"></i>
+                                <i class="fa fa-star turuncu{% if urun.average_rating|add:"0" < 3 %}-o empty gri{% endif %}"></i>
+                                <i class="fa fa-star turuncu{% if urun.average_rating|add:"0" < 4 %}-o empty gri{% endif %}"></i>
+                                <i class="fa fa-star turuncu{% if urun.average_rating|add:"0" < 5 %}-o empty gri{% endif %}"></i>
+                                {% if urun.user.userprofiles.premium_mu == True %}
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="text-purple-400 ml-4 w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+                                </svg>
+                                {% endif %}
+                            </div>
+                        <h2 class="text-medium h-12 font-medium">{{ urun.title }}</h2>
+                        <p class="text-m text-gray-600">₺{{ urun.get_display_price }}</p>
+                    </a>  
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class = "bg-white w-full rounded flex justify-center font-medium font-xl">
+        <nav aria-label="Page navigation example">
+            <ul class="list-style-none flex">
+            <li aria-current="page">
+                <a
+                class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
+                >Sayfa 1 / 1</a
+                >
+            </li>
+            </ul>
+        </nav>
+    </div>
+    {% else %}
+    <div class = "mx-2">
+        <h2 class = "flex justify-center bg-white rounded-lg shadow-lg text-lg font-bold text-gray-500 mt-2 py-2 w-full">
+        Bu kategori ile eşleşen herhangi bir ürün bulunmamaktadır.
+        </h2>
+    </div>
+    {% endif %}
+{% endblock %}
