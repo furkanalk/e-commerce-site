@@ -1,0 +1,128 @@
+{% extends 'base/base.html'%}
+
+{% block title %}{{ category.title }}{% endblock %}
+{% block content %}
+<h1 class="flex flex-wrap shadow-lg rounded justify-center text-2xl text-orange-400 font-medium bg-gray-100 mt-2 py-2">
+  {{ category.title }}
+</h1>
+
+<!-- FILTER -->
+<h1
+  class="flex flex-wrap shadow-lg rounded justify-between text-xl text-primary font-medium bg-gray-100 mt-2 px-8 py-2">
+  <a href="{% url 'filter_category' category.slug %}?name=1"
+    class="flex px-2 py-1 hover:bg-gray-200 transition duration-500">
+    By Rating
+    <svg class="h-7 w-7 text-blue-400" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+      fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" />
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <line x1="16" y1="9" x2="12" y2="5" />
+      <line x1="8" y1="9" x2="12" y2="5" />
+    </svg>
+  </a>
+  <a href="{% url 'filter_category' category.slug %}?name=2"
+    class="flex px-2 py-1 hover:bg-gray-200 transition duration-500">
+    Oldest to Newest
+    <svg class="h-7 w-7 text-blue-400" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+      fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" />
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <line x1="16" y1="9" x2="12" y2="5" />
+      <line x1="8" y1="9" x2="12" y2="5" />
+    </svg>
+  </a>
+  <a href="{% url 'filter_category' category.slug %}?name=3"
+    class="flex px-2 py-1 hover:bg-gray-200 transition duration-500">
+    Newest to Oldest
+    <svg class="h-7 w-7 text-blue-400" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+      fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" />
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <line x1="16" y1="15" x2="12" y2="19" />
+      <line x1="8" y1="15" x2="12" y2="19" />
+    </svg>
+  </a>
+  <a href="{% url 'filter_category' category.slug %}?name=4"
+    class="flex px-2 py-1 hover:bg-gray-200 transition duration-500">
+    Ascending Price
+    <svg class="h-7 w-7 text-blue-400" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+      fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" />
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <line x1="16" y1="9" x2="12" y2="5" />
+      <line x1="8" y1="9" x2="12" y2="5" />
+    </svg>
+  </a>
+  <a href="{% url 'filter_category' category.slug %}?name=5"
+    class="flex px-2 py-1 hover:bg-gray-200 transition duration-500">
+    Descending Price
+    <svg class="h-7 w-7 text-blue-400" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+      fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" />
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <line x1="16" y1="15" x2="12" y2="19" />
+      <line x1="8" y1="15" x2="12" y2="19" />
+    </svg>
+  </a>
+  <a href="{% url 'filter_category' category.slug %}?name=6"
+    class="px-2 text-primary-600 py-1 hover:bg-gray-200 transition duration-500">
+    Reset
+  </a>
+</h1>
+<!-- /FILTER -->
+
+<!-- PRODUCTS -->
+<div class="flex flex-wrap bg-gray-200">
+  {% for product in products %}
+    {% if product.user.user_profiles.is_premium == true %}
+    {% include 'includes/premium_products.html' %}
+    {% elif product.user.user_profiles.is_premium == false %}
+    {% include 'includes/products.html' %}
+    {% endif %}
+  {% endfor %}
+</div>
+<!-- /PRODUCTS -->
+
+<!-- PAGINATOR -->
+<div class="bg-white w-full rounded flex justify-center font-medium font-xl">
+  <nav aria-label="Page navigation example">
+    <ul class="list-style-none flex">
+      {% if products.has_previous %}
+      <li>
+        <a class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-gray-200 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
+          href="?page=1">
+          First
+        </a>
+      </li>
+      <li>
+        <a class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-gray-200 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
+          href="?page={{ products.previous_page_number }}">
+          Previous
+        </a>
+      </li>
+      {% endif %}
+      <li aria-current="page">
+        <a
+          class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">Page
+          {{ products.number }} / {{ products.paginator.num_pages }}
+        </a>
+      </li>
+      {% if products.has_next %}
+      <li>
+        <a class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-gray-200 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
+          href="?page={{ products.next_page_number }}">
+          Next
+        </a>
+      </li>
+      <li>
+        <a class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-gray-200 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
+          href="?page={{ products.paginator.num_pages }}">
+          Last
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+<!-- /PAGINATOR -->
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base/base.html'%}
+
+{% block title %}Confirmed{% endblock %}
+{% block content %}
+<div class="bg-white py-4 rounded-lg shadow-lg">
+  <div>
+    <div class="flex justify-center">
+      <img src="{{ ww }}" class="rounded-lg shadow-lg" style="height: 210px">
+    </div>
+    <h1 class="text-center mb-6 text-2xl text-blue-400">
+      Thank you for your purchase.
+    </h1>
+    <h2 class="text-center mb-6 text-2xl text-gray-400">
+      You will be redirected to the homepage in approximately 3 seconds...
+    </h2>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/store/order_confirmed.js' %}"></script>
+{% endblock %}

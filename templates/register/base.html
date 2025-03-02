@@ -1,0 +1,36 @@
+{% load static %}
+{% static 'ico/whitegoods.ico' as w %}
+{% static 'ico/whitegoods_wide.ico' as ww %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/ico" href="{{ w }}" />
+  <title>
+    {% block title %}{% endblock %} - Whitegoods.com
+  </title>
+
+  <!-- STYLES & FONTS -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/tw-elements.min.css" />
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.tailwindcss.com/3.3.0"></script>
+  
+</head>
+
+<body style="background-color:#cdd9fe">
+  
+  <!-- MAIN CONTENT -->
+    {% block content %}
+    {% endblock %}
+
+  <!-- SCRIPTS -->
+  {% block scripts %}
+  {% endblock %}
+</body>
+
+</html>

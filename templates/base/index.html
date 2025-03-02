@@ -1,0 +1,68 @@
+{% extends 'base/base.html'%}
+{% load static %}
+
+{% block title %}Homepage{% endblock %}
+{% block content %}
+<div id="carouselExampleCaptions" class="relative" data-te-carousel-init data-te-carousel-slide>
+  <div class="relative w-full overflow-hidden after:clear-both after:block after:content-['']">
+    {% for item in images reversed %}
+    <div
+      class="relative float-left -mr-[100%] w-full transition-transform duration-[600ms] ease-in-out motion-reduce:transition-none"
+      data-te-carousel-active data-te-carousel-item style="backface-visibility: hidden">
+      <img src="{{ item.image.url }}" class="block w-full" alt="...">
+      <div class="absolute inset-x-[15%] bottom-5 hidden py-5 text-center text-white md:block">
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <button
+    class="absolute bottom-0 left-0 top-0 z-[1] flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-white opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-white hover:no-underline hover:opacity-90 hover:outline-none focus:text-white focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
+    type="button" data-te-target="#carouselExampleCaptions" data-te-slide="prev">
+    <span class="inline-block h-8 w-8">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="h-6 w-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+      </svg>
+    </span>
+  </button>
+  <button
+    class="absolute bottom-0 right-0 top-0 z-[1] flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-white opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-white hover:no-underline hover:opacity-90 hover:outline-none focus:text-white focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
+    type="button" data-te-target="#carouselExampleCaptions" data-te-slide="next">
+    <span class="inline-block h-8 w-8">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="h-6 w-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+      </svg>
+    </span>
+  </button>
+</div>
+
+<div class="mx-2">
+  <h2 class="flex justify-center bg-white rounded-lg shadow-lg text-2xl font-bold text-purple-400 mt-2 py-2 w-full">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+      class="w-8 h-8 mr-2">
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+    </svg>PREMIUM GOODS
+  </h2>
+</div>
+
+{% include 'store/includes/premium_products.html' %}
+
+<div class="mx-2">
+  <h2 class="flex justify-center bg-white rounded-lg shadow-lg text-2xl font-bold text-orange-500 mt-2 py-2 w-full">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+      class="mr-2 w-7 h-7">
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z" />
+    </svg>LATEST GOODS
+  </h2>
+</div>
+
+{% include 'store/includes/products.html' %}
+{% include 'base/includes/status_banner.html' %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/base/index.js' %}"></script>
+{% endblock %}

@@ -1,6 +1,1 @@
-Don't forget to download those packages:
-django-ckeditor
-fontawesomefree
-cloudinary
-cloudinary_storage
-stripe
+django-ckeditor==6.7.2

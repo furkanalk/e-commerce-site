@@ -1,0 +1,85 @@
+{% extends 'base/base.html'%}
+{% load widget_tweaks %}
+
+{% block title %}Payment{% endblock %}
+{% block content %}
+<!-- ERROR HANDLING -->
+{% if form.errors %}
+<div class="flex p-4 mb-4 text-sm text-yellow-800 border border-yellow-300 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300 dark:border-yellow-800"
+  role="alert">
+  <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20"
+    xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd"
+      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+      clip-rule="evenodd"></path>
+  </svg>
+  <span class="sr-only">Info</span>
+  <div>
+    <ul>Error:
+      {% for field in form %}
+        {% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endif %}
+<!-- /ERROR HANDLING -->
+
+<!-- PAYMENT -->
+<div class="bg-white rounded-xl px-5 py-5 mt-5 shadow-lg">
+  <h1 class="justify-center grid mb-6 text-2xl">
+    Payment
+  </h1>
+  <h2 class="justify-center grid text-xl text-gray-500">
+    Total price: {{ sepet.total_price}} ₺
+  </h2>
+
+  <!-- FORM -->
+  <form>
+    {% csrf_token %}
+    <div class="py-5 grid justify-center">
+      <strong>Name :</strong>
+      {% with input_classes="input form-control text-sm placeholder-gray-400 pl-10 pr-4 rounded border border-gray-400 w-96 py-2 focus:outline-none focus:border-blue-400" %}
+        {% render_field form.first_name placeholder="Enter your name" class=input_classes %}
+      {% endwith %}
+    </div>
+    <div class="py-5 grid justify-center">
+      <strong>Surname :</strong>
+      {% with input_classes="input form-control text-sm placeholder-gray-400 pl-10 pr-4 rounded border border-gray-400 w-96 py-2 focus:outline-none focus:border-blue-400" %}
+        {% render_field form.last_name placeholder="Enter your surname" class=input_classes %}
+      {% endwith %}
+    </div>
+    <div class="py-5 grid justify-center">
+      <strong>Address :</strong>
+      {% with input_classes="input form-control text-sm placeholder-gray-400 pl-10 pr-4 rounded border border-gray-400 w-96 py-2 focus:outline-none focus:border-blue-400" %}
+        {% render_field form.address placeholder="Enter your address" class=input_classes %}
+      {% endwith %}
+    </div>
+    <div class="py-5 grid justify-center">
+      <strong>Zip Code :</strong>
+      {% with input_classes="input form-control text-sm placeholder-gray-400 pl-10 pr-4 rounded border border-gray-400 w-96 py-2 focus:outline-none focus:border-blue-400" %}
+        {% render_field form.zipcode placeholder="Enter your zip code" class=input_classes %}
+      {% endwith %}
+    </div>
+    <div class="py-5 grid justify-center">
+      <strong>City :</strong>
+      {% with input_classes="input form-control text-sm placeholder-gray-400 pl-10 pr-4 rounded border border-gray-400 w-96 py-2 focus:outline-none focus:border-blue-400" %}
+        {% render_field form.city placeholder="Enter your city" class=input_classes %}
+      {% endwith %}
+    </div>
+  </form>
+  <!-- /FORM -->
+
+  <div class="grid justify-center">
+    <button class="button px-40 py-4 hover:bg-white duration-500 bg-orange-400 text-white" onclick="buy(event)">
+      Make Payment
+    </button>
+  </div>
+</div>
+<!-- /PAYMENT -->
+{% endblock %}
+
+{% block scripts %}
+<script type="application/javascript" src="https://js.stripe.com/v3/"></script>
+<script src="{% static 'js/store/checkout.js' %}"></script>
+{% endblock %}

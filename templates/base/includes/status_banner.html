@@ -1,0 +1,136 @@
+<div class="px-3  border-t border-b py-20 bg-gray-200">
+  <div class="grid grid-cols-1 md:lg:xl:grid-cols-3 group bg-white shadow-xl shadow-neutral-100 border ">
+
+    <!-- FIRST CARD -->
+    <div class="p-10 flex flex-col items-center text-center group md:lg:xl:border-r hover:bg-slate-50 cursor-pointer">
+      <img src="{{ w }}" style="height: 80px">
+      <p class="text-xl font-medium text-slate-700 mt-3">
+        Whitegoods.com
+      </p>
+      <p class="mt-2 text-sm text-slate-500">
+        The only address for secure shopping.
+      </p>
+    </div>
+    <!-- /FIRST CARD -->
+
+    <!-- SECOND CARD -->
+    <div class="p-10 flex flex-col items-center text-center group  md:lg:xl:border-r hover:bg-slate-50 cursor-pointer">
+      <span class="p-5 rounded-full bg-orange-100 text-white">
+        <svg class="h-10 w-10 text-orange-400" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+          stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z" />
+          <line x1="3" y1="21" x2="21" y2="21" />
+          <path d="M3 7v1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1h-18l2 -4h14l2 4" />
+          <path d="M5 21v-10.15" />
+          <path d="M19 21v-10.15" />
+          <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" />
+        </svg>
+      </span>
+      <p class="text-xl font-medium text-slate-700 mt-3">
+        Ready to Shop
+      </p>
+      <p class="mt-2 text-sm text-slate-500">
+        Your Market, Your Rules.
+      </p>
+    </div>
+    <!-- /SECOND CARD -->
+
+    <!-- THIRD CARD -->
+    <div class="p-10 flex flex-col items-center text-center group hover:bg-slate-50 cursor-pointer">
+      <span class="p-5 rounded-full bg-blue-500 text-white">
+        <svg class="h-10 w-10 text-teal-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+      </span>
+      <p class="text-xl font-medium text-slate-700 mt-3">
+        Trusted Shopping
+      </p>
+      <p class="mt-2 text-sm text-slate-500">
+        Customer satisfaction is our priority.
+      </p>
+    </div>
+    <!-- /THIRD CARD -->
+  </div>
+
+  <!-- APPLICATION STATUS -->
+  {% if request.user.user_profiles.is_premium %}
+  <div class="w-full bg-[#8abcd7] shadow-xl shadow-blue-400 py-10 px-20 flex justify-between items-center">
+    <p class=" text-white">
+      <span class="text-4xl font-medium text-center">
+        We thank you as the WhiteGoods family!
+      </span>
+      <br>
+      <span class="text-lg">
+        We’re glad you’re here!&nbsp;{% firstof user.get_full_name user.username %}&nbsp;!
+      </span>
+    </p>
+  </div>
+
+  {% elif premium_applied is not None %}
+  <div class="w-full bg-purple-600 shadow-xl shadow-purple-400 py-10 px-20 flex justify-between items-center">
+    <p class=" text-white">
+      <span class="text-4xl font-medium">
+        You have applied to become Premium!
+      </span>
+      <br>
+      <span class="text-lg">
+        Your application is being evaluated.
+      </span>
+    </p>
+    <button class="px-5 py-3 font-medium text-slate-700 shadow-xl hover:bg-white duration-150 bg-orange-300" disabled>
+      Pending Approval
+    </button>
+  </div>
+
+  {% elif request.user.user_profiles.is_seller %}
+  <div class="w-full bg-purple-600 shadow-xl shadow-purple-400 py-10 px-20 flex justify-between items-center">
+    <p class="text-white">
+      <span class="text-4xl font-medium">
+        Do you want to be Premium?
+      </span>
+      <br>
+      <span class="text-lg">
+        Apply to see the conditions!
+      </span>
+    </p>
+    <a href="{% url 'submission:premium_submission' %}" class="px-5 py-3 font-medium text-slate-700 shadow-xl hover:bg-white duration-150 bg-orange-300">
+      Apply Now!
+    </a>
+  </div>
+
+  {% elif seller_applied is not None %}
+  <div class="w-full bg-[#8abcd7] shadow-xl shadow-blue-200 py-10 px-20 flex justify-between items-center">
+    <p class="text-white">
+      <span class="text-4xl font-medium">
+        You have applied to become a seller!
+      </span>
+      <br>
+      <span class="text-lg">
+        Your application is being reviewed.
+      </span>
+    </p>
+    <button class="px-5 py-3 font-medium text-slate-700 shadow-xl hover:bg-white duration-150 bg-orange-300" disabled>
+      Pending Approval
+    </button>
+  </div>
+
+  {% else %}
+  <div class="w-full bg-[#8abcd7] shadow-xl shadow-blue-200 py-10 px-20 flex justify-between items-center">
+    <p class="text-white">
+      <span class="text-4xl font-medium">
+        Do you want to become a seller?
+      </span>
+      <br>
+      <span class="text-lg">
+        All you need to do is fill out the application form!
+      </span>
+    </p>
+    <a href="{% url 'submission:seller_submission' %}" class="px-5 py-3 font-medium text-slate-700 shadow-xl hover:bg-white duration-150 bg-orange-300">
+      Apply Now!
+    </a>
+  </div>
+  {% endif %}
+  <!-- /APPLICATION STATUS -->
+</div>
