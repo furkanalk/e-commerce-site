@@ -1,4 +1,5 @@
 # E-Commerce Site
+<img src="https://i.imgur.com/yabCF96.jpeg" alt="E-Commerce Site Logo" width="500">
 
 ## About the Project
 
