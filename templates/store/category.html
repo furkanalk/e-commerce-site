@@ -9,7 +9,7 @@
 <!-- FILTER -->
 <h1
   class="flex flex-wrap shadow-lg rounded justify-between text-xl text-primary font-medium bg-gray-100 mt-2 px-8 py-2">
-  <a href="{% url 'filter_category' category.slug %}?name=1"
+  <a href="{% url 'store:filter_category' category.slug %}?name=1"
     class="flex px-2 py-1 hover:bg-gray-200 transition duration-500">
     By Rating
     <svg class="h-7 w-7 text-blue-400" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -20,7 +20,7 @@
       <line x1="8" y1="9" x2="12" y2="5" />
     </svg>
   </a>
-  <a href="{% url 'filter_category' category.slug %}?name=2"
+  <a href="{% url 'store:filter_category' category.slug %}?name=2"
     class="flex px-2 py-1 hover:bg-gray-200 transition duration-500">
     Oldest to Newest
     <svg class="h-7 w-7 text-blue-400" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -31,7 +31,7 @@
       <line x1="8" y1="9" x2="12" y2="5" />
     </svg>
   </a>
-  <a href="{% url 'filter_category' category.slug %}?name=3"
+  <a href="{% url 'store:filter_category' category.slug %}?name=3"
     class="flex px-2 py-1 hover:bg-gray-200 transition duration-500">
     Newest to Oldest
     <svg class="h-7 w-7 text-blue-400" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -42,7 +42,7 @@
       <line x1="8" y1="15" x2="12" y2="19" />
     </svg>
   </a>
-  <a href="{% url 'filter_category' category.slug %}?name=4"
+  <a href="{% url 'store:filter_category' category.slug %}?name=4"
     class="flex px-2 py-1 hover:bg-gray-200 transition duration-500">
     Ascending Price
     <svg class="h-7 w-7 text-blue-400" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -53,7 +53,7 @@
       <line x1="8" y1="9" x2="12" y2="5" />
     </svg>
   </a>
-  <a href="{% url 'filter_category' category.slug %}?name=5"
+  <a href="{% url 'store:filter_category' category.slug %}?name=5"
     class="flex px-2 py-1 hover:bg-gray-200 transition duration-500">
     Descending Price
     <svg class="h-7 w-7 text-blue-400" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -64,7 +64,7 @@
       <line x1="8" y1="15" x2="12" y2="19" />
     </svg>
   </a>
-  <a href="{% url 'filter_category' category.slug %}?name=6"
+  <a href="{% url 'store:filter_category' category.slug %}?name=6"
     class="px-2 text-primary-600 py-1 hover:bg-gray-200 transition duration-500">
     Reset
   </a>
@@ -72,15 +72,11 @@
 <!-- /FILTER -->
 
 <!-- PRODUCTS -->
-<div class="flex flex-wrap bg-gray-200">
-  {% for product in products %}
-    {% if product.user.user_profiles.is_premium == true %}
-    {% include 'includes/premium_products.html' %}
-    {% elif product.user.user_profiles.is_premium == false %}
-    {% include 'includes/products.html' %}
-    {% endif %}
-  {% endfor %}
-</div>
+{% if product.user.user_profiles.is_premium %}
+{% include 'store/includes/premium_products.html' %}
+{% elif product.user.user_profiles.is_seller %}
+{% include 'store/includes/products.html' %}
+{% endif %}
 <!-- /PRODUCTS -->
 
 <!-- PAGINATOR -->

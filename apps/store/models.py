@@ -134,11 +134,6 @@ class Comments(models.Model):
     class Meta:
         verbose_name_plural = 'Comments'
 
-    STATUS_CHOICES = (
-        (0, 'No'),
-        (1, 'Yes')
-    )
-
     # Relationships
     user = models.ForeignKey(
         User, 
@@ -156,18 +151,14 @@ class Comments(models.Model):
     comment = models.TextField(max_length=200, blank=True)
     rate = models.IntegerField(blank=True)
 
-    # Status flags
-    status = models.CharField(
-        max_length=10, 
-        choices=STATUS_CHOICES, 
-        default=0
+    # Status flag
+    status = models.BooleanField(
+        default=False
     )
     
-    # Reported flags
-    reported = models.CharField(
-        max_length=10, 
-        choices=STATUS_CHOICES, 
-        default=0
+    # Reported flag
+    reported = models.BooleanField(
+        default=False
     )
 
     # Metadata
@@ -233,15 +224,12 @@ class OrderItem(models.Model):
     def __str__(self):
         return str(self.product)
     
+    def get_status_display(self):
+        return dict(self.ORDER_STATUSES).get(self.status, "Unknown Status")
+    
 class QuestionAnswer(models.Model):
     class Meta:
         verbose_name_plural = 'Questions and Answers'
-
-    # Status choices
-    STATUS_CHOICES = (
-        (0, 'No'),
-        (1, 'Yes')
-    )
 
     # Relationships
     user = models.ForeignKey(
@@ -260,17 +248,14 @@ class QuestionAnswer(models.Model):
     answer = models.TextField(max_length=200, blank=True)
 
     # Status flags
-    status = models.IntegerField(
-        choices=STATUS_CHOICES, 
-        default=1
+    status = models.BooleanField(
+        default=False
     )
-    answered = models.IntegerField(
-        choices=STATUS_CHOICES, 
-        default=0
+    answered = models.BooleanField(
+        default=False
     )
-    reported = models.IntegerField(
-        choices=STATUS_CHOICES, 
-        default=0 
+    reported = models.BooleanField(
+        default=False
     )
 
     def __str__(self):
@@ -279,12 +264,6 @@ class QuestionAnswer(models.Model):
 class Favorites(models.Model):
     class Meta:
         verbose_name_plural = 'Favorites'
-
-    # Status choices
-    STATUS_CHOICES = (
-        (0, 'No'),
-        (1, 'Yes')
-    )
 
     # Relationships
     user = models.ForeignKey(
@@ -299,9 +278,8 @@ class Favorites(models.Model):
     )
 
     # Status field
-    status = models.IntegerField(
-        choices=STATUS_CHOICES, 
-        default=1
+    status = models.BooleanField(
+        default=False
     )
 
     def __str__(self):

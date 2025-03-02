@@ -45,41 +45,34 @@ function stateHandle() {
 }
 
 // Stripe Payment
-function buy(event){
+document.getElementById('buy-button').addEventListener('click', function(event) {
     event.preventDefault();
+
+    let stripePublicKey = this.getAttribute('data-stripe');
+    let csrftoken = this.getAttribute('data-csrf');
     
+    let stripe = Stripe(stripePublicKey);
+
     let data = {
         'first_name': document.getElementById('id_first_name').value,
         'last_name': document.getElementById('id_last_name').value,
         'address': document.getElementById('id_address').value,
         'zipcode': document.getElementById('id_zipcode').value,
         'city': document.getElementById('id_city').value,
-    }
+    };
 
-    let stripe = Stripe('{{ pub_key }}');
-
-    fetch('/cart/checkout/',{
+    fetch('/cart/checkout/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': '{{ csrf_token }}'
+            'X-CSRFToken': csrftoken
         },
         credentials: 'same-origin',
         body: JSON.stringify(data)
     })
-    
-    .then(function(response) {
-        return response.json()
+    .then(response => response.json())
+    .then(session => {
+        return stripe.redirectToCheckout({ sessionId: session.session.id });
     })
-    .then(function(session) {
-        return stripe.redirectToCheckout({ sessionId: session.session.id })
-    })
-    .then(function(result) {
-        if(result.error){
-            alert(result.error.message)
-        }
-    })
-    .catch(error => console.error(error));
-
-    return false;
-}
+    .catch(error => console.error("Error:", error));
+});

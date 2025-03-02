@@ -24,18 +24,29 @@
     <div class="justify-between flex tracking-wide px-4 py-4">
       <h2 class="text-gray-800 font-semibold mt-1">{{ product.title }}</h2>
       <div class="flex flex-wrap justify-end">
-        {% if favorite %}
-          {% if favorite.status is true %}
-          <a href="{% url 'store:product_detail' product.category.slug product.slug%}?name=1"
-            title="Remove from favorites" class="absolute w-6 h-6 cursor-pointer mr-36 ">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="text-pink-600 hover:text-gray-400 w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-            </svg>
-          </a>
+        {% if request.user.is_authenticated == True %}
+          {% if favorite %}
+            {% if favorite.status %}
+            <a href="{% url 'store:product_detail' product.category.slug product.slug%}?fav=1"
+              title="Remove from favorites" class="absolute w-6 h-6 cursor-pointer mr-36 ">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="text-pink-600 hover:text-gray-400 w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+              </svg>
+            </a>
+            {% else %}
+            <a href="{% url 'store:product_detail' product.category.slug product.slug%}?fav=0" title="Add to favorites"
+              class="absolute w-6 h-6 cursor-pointer mr-36 ">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class=" text-gray-400 hover:text-pink-600 w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+              </svg>
+            </a>
+            {% endif %}
           {% else %}
-          <a href="{% url 'store:product_detail' product.category.slug product.slug%}?name=0" title="Add to favorites"
+          <a href="{% url 'store:product_detail' product.category.slug product.slug%}?fav=0" title="Add to favorites"
             class="absolute w-6 h-6 cursor-pointer mr-36 ">
             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class=" text-gray-400 hover:text-pink-600 w-6 h-6">
@@ -44,15 +55,6 @@
             </svg>
           </a>
           {% endif %}
-        {% else %}
-        <a href="{% url 'store:product_detail' product.category.slug product.slug%}?name=0" title="Add to favorites"
-          class="absolute w-6 h-6 cursor-pointer mr-36 ">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class=" text-gray-400 hover:text-pink-600 w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-          </svg>
-        </a>
         {% endif %}
         <div class="absolute px-2 py-auto flex">
           <div class="ml-3 justify-center py-auto">
@@ -240,11 +242,11 @@
           <p>
             {{ product.details|safe }}
           </p>
-          {% if product.detail_image %}
-          <div class="justify-center mt-5 items-center flex">
-            <img src="{{ product.detail_image.url }}" img style="max-width: 800px;"></img>
-          </div>
-          {% endif %}
+            {% if product.detail_image %}
+            <div class="justify-center mt-5 items-center flex">
+              <img src="{{ product.detail_image.url }}" img style="max-width: 800px;"></img>
+            </div>
+            {% endif %}
           {% else %}
           <div class="flex justify-center">
             <p class="text-gray-800 bg-gray-200 px-4 py-3 rounded-lg w-auto text-center">
@@ -277,23 +279,23 @@
           </form>
           <div class="py-3"></div>
           {% if questions %}
-          {% for question in questions %}
-          {% if question.answered == "True" %}
-          <div class="bg-gray-100 rounded-lg py-5 mb-5 px-5">
-            <div class="w-1/2 bg-gray-200 rounded-full px-3 py-2">
-              <p> {{ question.question }} </p>
-            </div>
-            <div class="flex justify-between">
-              <div class="w-1/2"></div>
-              <div class="w-1/2 bg-gray-400 rounded-full px-3 py-2">
-                <p class="text-white font-normal">
-                  " {{ question.answer }} " - {% firstof product.user.get_full_name product.user.username %}
-                </p>
+            {% for question in questions %}
+              {% if question.answered == "True" %}
+              <div class="bg-gray-100 rounded-lg py-5 mb-5 px-5">
+                <div class="w-1/2 bg-gray-200 rounded-full px-3 py-2">
+                  <p> {{ question.question }} </p>
+                </div>
+                <div class="flex justify-between">
+                  <div class="w-1/2"></div>
+                  <div class="w-1/2 bg-gray-400 rounded-full px-3 py-2">
+                    <p class="text-white font-normal">
+                      " {{ question.answer }} " - {% firstof product.user.get_full_name product.user.username %}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          {% endif %}
-          {% endfor %}
+              {% endif %}
+            {% endfor %}
           {% else %}
           <div class="py-4 flex justify-center">
             <p class="bg-gray-200 justify-center px-4 py-3 rounded-full"> No questions yet. </p>
@@ -316,21 +318,21 @@
             </div>
             {% endif %}
             {% if questions %}
-            {% for question in questions %}
-            {% if question.answered == "False" and question.user_id == request.user.id %}
-            <div class="bg-gray-100 rounded-lg py-5 mb-5 px-5">
-              <div class="w-1/2 bg-gray-200 rounded-full px-3 py-2">
-                <p> {{ question.question }} </p>
-              </div>
-              <div class="flex justify-between">
-                <div class="w-1/2"></div>
-                <div class="w-1/2 bg-gray-400 rounded-full px-3 py-2">
-                  <p class="text-white italic font-light"> "Not yet answered."</p>
+              {% for question in questions %}
+                {% if question.answered == "False" and question.user_id == request.user.id %}
+                <div class="bg-gray-100 rounded-lg py-5 mb-5 px-5">
+                  <div class="w-1/2 bg-gray-200 rounded-full px-3 py-2">
+                    <p> {{ question.question }} </p>
+                  </div>
+                  <div class="flex justify-between">
+                    <div class="w-1/2"></div>
+                    <div class="w-1/2 bg-gray-400 rounded-full px-3 py-2">
+                      <p class="text-white italic font-light"> "Not yet answered."</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            {% endif %}
-            {% endfor %}
+                {% endif %}
+              {% endfor %}
             {% endif %}
           </div>
         </div>
@@ -347,31 +349,21 @@
             {% if average_rating != 0 %}
             <p class="font-extrabold text-lg ml-2"> {{ average_rating }}</p>
             {% endif %}
-
-            <style>
-              .orange {
-                color: orange;
-              }
-
-              .grey {
-                color: #d1d5db;
-              }
-            </style>
             {% if average_rating != 0 %}
             <div class="ml-3">
-              <i class="fa fa-star orange{% if average_rating < 1 %}-o empty grey{% endif %}"></i>
-              <i class="fa fa-star orange{% if average_rating < 2 %}-o empty grey{% endif %}"></i>
-              <i class="fa fa-star orange{% if average_rating < 3 %}-o empty grey{% endif %}"></i>
-              <i class="fa fa-star orange{% if average_rating < 4 %}-o empty grey{% endif %}"></i>
-              <i class="fa fa-star orange{% if average_rating < 5 %}-o empty grey{% endif %}"></i>
+              <i class="fa fa-star {% if average_rating < 1 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+              <i class="fa fa-star {% if average_rating < 2 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+              <i class="fa fa-star {% if average_rating < 3 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+              <i class="fa fa-star {% if average_rating < 4 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+              <i class="fa fa-star {% if average_rating < 5 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
             </div>
             {% else %}
             <div class="ml-6">
-              <i class="fa fa-star orange{% if average_rating < 1 %}-o empty grey{% endif %}"></i>
-              <i class="fa fa-star orange{% if average_rating < 2 %}-o empty grey{% endif %}"></i>
-              <i class="fa fa-star orange{% if average_rating < 3 %}-o empty grey{% endif %}"></i>
-              <i class="fa fa-star orange{% if average_rating < 4 %}-o empty grey{% endif %}"></i>
-              <i class="fa fa-star orange{% if average_rating < 5 %}-o empty grey{% endif %}"></i>
+              <i class="fa fa-star {% if average_rating < 1 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+              <i class="fa fa-star {% if average_rating < 2 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+              <i class="fa fa-star {% if average_rating < 3 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+              <i class="fa fa-star {% if average_rating < 4 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+              <i class="fa fa-star {% if average_rating < 5 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
             </div>
             {% endif %}
           </div>
@@ -382,22 +374,13 @@
           {% for comment in comments %}
           <div class="bg-gray-100 rounded-lg border border-gray-200 py-2 mb-5 px-3">
             <div>
-              <style>
-                .orange {
-                  color: orange;
-                }
-
-                .grey {
-                  color: #d1d5db;
-                }
-              </style>
               <div class="flex justify-between">
                 <div>
-                  <i class="fa fa-star orange{% if comment.rate < 1 %}-o empty grey{% endif %}"></i>
-                  <i class="fa fa-star orange{% if comment.rate < 2 %}-o empty grey{% endif %}"></i>
-                  <i class="fa fa-star orange{% if comment.rate < 3 %}-o empty grey{% endif %}"></i>
-                  <i class="fa fa-star orange{% if comment.rate < 4 %}-o empty grey{% endif %}"></i>
-                  <i class="fa fa-star orange{% if comment.rate < 5 %}-o empty grey{% endif %}"></i>
+                  <i class="fa fa-star {% if average_rating < 1 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+                  <i class="fa fa-star {% if average_rating < 2 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+                  <i class="fa fa-star {% if average_rating < 3 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+                  <i class="fa fa-star {% if average_rating < 4 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+                  <i class="fa fa-star {% if average_rating < 5 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
                 </div>
                 <div>
                   <p class="text-gray-600 italic "> ' {% firstof comment.user.get_full_name
@@ -440,56 +423,46 @@
           <div id="slider"
             class="h-72 flex lg:gap-8 md:gap-6 gap-14 items-center justify-start transition ease-out duration-700">
             {% for item in products %}
-            {% if item.id is not product.id %}
-            <div class="flex relative w-full ">
-              <a href="{% url 'store' item.category.slug item.slug %}">
-
-                <div class="image overflow-hidden flex justify-center">
-                  {% if item.image %}
-                  <img src="{{ item.image.url }}" style="height: 160px"
-                    class="hover:scale-105 transition-all duration-500" alt="Image of {{ item.title }}">
+              {% if item.id is not product.id %}
+              <div class="flex relative w-full ">
+                <a href="{% url 'store' item.category.slug item.slug %}">
+                  <div class="image overflow-hidden flex justify-center">
+                    {% if item.image %}
+                    <img src="{{ item.image.url }}" style="height: 160px"
+                      class="hover:scale-105 transition-all duration-500" alt="Image of {{ item.title }}">
+                    {% else %}
+                    <img src="http://via.placeholder.com/300x300" class="hover:scale-105 transition-all duration-500"
+                      alt="Image of {{ product.title }}" style="height: 160px"> <!--product.get_thumbnail-->
+                    </img>
+                    {% endif %}
+                  </div>
+                  {% if item.user.user_profiles.is_premium == 1 %}
+                  <div class="flex py-1 text-center justify-center">
+                    <i class="fa fa-star {% if average_rating < 1 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+                    <i class="fa fa-star {% if average_rating < 2 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+                    <i class="fa fa-star {% if average_rating < 3 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+                    <i class="fa fa-star {% if average_rating < 4 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+                    <i class="fa fa-star {% if average_rating < 5 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
+                      stroke="currentColor" class="text-purple-400 ml-2 w-5 h-5">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+                    </svg>
+                  </div>
                   {% else %}
-                  <img src="http://via.placeholder.com/300x300" class="hover:scale-105 transition-all duration-500"
-                    alt="Image of {{ product.title }}" style="height: 160px"> <!--product.get_thumbnail-->
-                  </img>
+                  <div class="py-1 text-center">
+                    <i class="fa fa-star {% if average_rating < 1 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+                    <i class="fa fa-star {% if average_rating < 2 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+                    <i class="fa fa-star {% if average_rating < 3 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+                    <i class="fa fa-star {% if average_rating < 4 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+                    <i class="fa fa-star {% if average_rating < 5 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+                  </div>
                   {% endif %}
-                </div>
-                <style>
-                  .orange {
-                    color: orange;
-                  }
-
-                  .grey {
-                    color: #d1d5db;
-                  }
-                </style>
-                {% if item.user.user_profiles.is_premium == 1 %}
-                <div class="flex py-1 text-center justify-center">
-                  <i class="fa fa-star orange{% if item.average_rating < 1 %}-o empty grey{% endif %}"></i>
-                  <i class="fa fa-star orange{% if item.average_rating < 2 %}-o empty grey{% endif %}"></i>
-                  <i class="fa fa-star orange{% if item.average_rating < 3 %}-o empty grey{% endif %}"></i>
-                  <i class="fa fa-star orange{% if item.average_rating < 4 %}-o empty grey{% endif %}"></i>
-                  <i class="fa fa-star orange{% if item.average_rating < 5 %}-o empty grey{% endif %}"></i>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
-                    stroke="currentColor" class="text-purple-400 ml-2 w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
-                  </svg>
-                </div>
-                {% else %}
-                <div class="py-1 text-center">
-                  <i class="fa fa-star orange{% if item.average_rating < 1 %}-o empty grey{% endif %}"></i>
-                  <i class="fa fa-star orange{% if item.average_rating < 2 %}-o empty grey{% endif %}"></i>
-                  <i class="fa fa-star orange{% if item.average_rating < 3 %}-o empty grey{% endif %}"></i>
-                  <i class="fa fa-star orange{% if item.average_rating < 4 %}-o empty grey{% endif %}"></i>
-                  <i class="fa fa-star orange{% if item.average_rating < 5 %}-o empty grey{% endif %}"></i>
-                </div>
-                {% endif %}
-                <h2 class="text-medium w-48 text-center">{{ item.title }}</h2>
-                <p class="text-m text-gray-600 text-center">₺{{ item.get_display_price }}</p>
-              </a>
-            </div>
-            {% endif %}
+                  <h2 class="text-medium w-48 text-center">{{ item.title }}</h2>
+                  <p class="text-m text-gray-600 text-center">₺{{ item.get_display_price }}</p>
+                </a>
+              </div>
+              {% endif %}
             {% endfor %}
           </div>
         </div>

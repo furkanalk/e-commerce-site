@@ -140,7 +140,7 @@ def order_details(request, pk, slug):
             order_item.save(update_fields=['status', 'reviewed'])
             return HttpResponseRedirect(referrer_url)
 
-    return render(request, 'profiles/order_details.html', {
+    return render(request, 'users/order_details.html', {
         'order': order,
         'order_item': order_item
     })
@@ -167,7 +167,6 @@ def add_product(request):
         form = ProductForm()
 
     return render(request, 'users/edit_product.html', {
-        'title': 'Add Product',
         'form': form
     })
 
@@ -176,8 +175,8 @@ def edit_product(request, pk):
     product = get_object_or_404(Product, user=request.user, pk=pk)
     form = ProductForm(request.POST or None, request.FILES or None, instance=product)
     answer_form = AnswerForm(request.POST or None, instance=product)
-    comments = Comments.objects.filter(product_id=pk, status=Comments.STATUS_CHOICES[1][0]).order_by('-created_at')
-    questions = QuestionAnswer.objects.filter(product_id=product.id, status=QuestionAnswer.STATUS_CHOICES[1][0]).order_by('id')
+    comments = Comments.objects.filter(product_id=pk, status=True).order_by('-created_at')
+    questions = QuestionAnswer.objects.filter(product_id=product.id, status=True).order_by('id')
 
     value = request.GET.get('name')
     qvalue = request.POST.get('theanswer')
@@ -290,7 +289,7 @@ def my_orders(request):
 
             order_item = OrderItem.objects.get(pk=orderv_id)
             order_item.reviewed = OrderItem.STATUS_CHOICES[2][0]
-            order_item.save(update_fields=['comment'])
+            order_item.save(update_fields=['reviewed'])
 
             product = Product.objects.get(pk=product_id)
             product.comment_count += 1
@@ -327,7 +326,7 @@ def manage_favorites(request):
             return HttpResponseRedirect(referrer_url)
 
         if process == '1':
-            return redirect('market', product.category.slug, product.slug)
+            return redirect('store:product_detail', product.category.slug, product.slug)
 
     return render(request, 'users/favorites.html', {
         'favorites': favorites,

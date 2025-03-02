@@ -15,7 +15,7 @@ from .forms import OrderForm, CommentsForm, QnAForm
 def add_to_cart(request, product_id):
     cart = Cart(request)
     cart.add(product_id)
-    return redirect('show_cart')
+    return redirect('store:show_cart')
 
 def show_cart(request):
     cart = Cart(request)
@@ -24,7 +24,7 @@ def show_cart(request):
 def remove_from_cart(request, product_id):
     cart = Cart(request)
     cart.remove(str(product_id))
-    return redirect('show_cart')
+    return redirect('store:show_cart')
 
 def update_quantity(request, product_id):
     action = request.GET.get('action', '')
@@ -34,7 +34,7 @@ def update_quantity(request, product_id):
         cart = Cart(request)
         cart.add(product_id, quantity, update_quantity=True)
 
-    return redirect('show_cart')
+    return redirect('store:show_cart')
 
 def order_confirmed(request):
     return render(request, 'store/order_confirmed.html')
@@ -57,19 +57,21 @@ def checkout(request):
             items.append({
                 'price_data': {
                     'currency': 'usd',
-                    'product_data': {'name': product.title},
+                    'product_data': {
+                        'name': product.title
+                        },
                     'unit_amount': product.price * 100
                 },
                 'quantity': item['quantity']
             })
 
-        # Stripe
+        # Stripe        
         stripe.api_key = settings.STRIPE_SECRET_KEY
         session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             line_items=items,
             mode='payment',
-            success_url='http://127.0.0.1:8000/cart/order_confirmed/',
+            success_url='http://127.0.0.1:8000/cart/success/',
             cancel_url='http://127.0.0.1:8000/cart/'
         )
         payment_intent = session.payment_intent
@@ -107,16 +109,14 @@ def checkout(request):
             product.save(update_fields=['total_sold'])
 
         cart.clear()
-
         return JsonResponse({'session': session, 'order': payment_intent})
-
     else:
         form = OrderForm()
 
     return render(request, 'store/checkout.html', {
         'cart': cart,
         'form': form,
-        'pub_key': settings.STRIPE_PUB_KEY,
+        'pub_key': "pk_test_51QyG6wJx37TAT4LLZ4geLZQRQl63Z0THGSVXf5dtLV41vo4kwhrwfcEU7YsyIgnu4BFCsYqdHnnOfKFzoIT4PBZr00xmRXSGC7",
     })
 
 def filter_store_category(request, slug):
@@ -149,11 +149,11 @@ def product_detail(request, category_slug, slug):
     product = get_object_or_404(Product, slug=slug, status=2)
     category = Category.objects.get(slug=category_slug)
     related_products = Product.objects.filter(category_id=category.id)
-    comments = Comments.objects.filter(product_id=product.id, status=1).order_by('-created_at')
-    questions = QuestionAnswer.objects.filter(product_id=product.id, status=1).order_by('-id')
+    comments = Comments.objects.filter(product_id=product.id, status=True).order_by('-created_at')
+    questions = QuestionAnswer.objects.filter(product_id=product.id, status=True).order_by('-id')
 
     try:
-        unanswered_question = QuestionAnswer.objects.get(product_id=product.id, user_id=request.user.id, answered=0)
+        unanswered_question = QuestionAnswer.objects.get(product_id=product.id, user_id=request.user.id, answered=False)
     except QuestionAnswer.DoesNotExist:
         unanswered_question = None
 
@@ -162,15 +162,15 @@ def product_detail(request, category_slug, slug):
     except Favorites.DoesNotExist:
         favorite = None
 
-    if comments.exists():
-        total_rating = sum(comment.rate for comment in comments)
-        average_rating = round(total_rating / comments.count(), 1)
-    else:
-        average_rating = 0
+    # if comments.exists():
+    #     total_rating = sum(comment.rate for comment in comments)
+    #     average_rating = round(total_rating / comments.count(), 1)
+    # else:
+    #     average_rating = 0
 
-    product.average_rating = average_rating
-    product.comment_count = comments.count()
-    product.save(update_fields=['average_rating', 'comment_count'])
+    # product.average_rating = average_rating
+    # product.comment_count = comments.count()
+    # product.save(update_fields=['average_rating', 'comment_count'])
 
     url = request.META.get('HTTP_REFERER')
     
@@ -186,6 +186,22 @@ def product_detail(request, category_slug, slug):
                 messages.success(request, "Your question has been submitted.")
                 return HttpResponseRedirect(url)
 
+    if request.GET.get('fav'):
+        fav = request.GET.get('fav')
+        if fav == '0':
+            data = Favorites()
+            data.status = True
+            data.product_id = product.id
+            data.user_id = request.user.id
+            data.save()
+            return HttpResponseRedirect(url)
+        
+        if favorite:
+            if fav == '1':
+                data = Favorites(pk= favorite.id)
+                data.delete()
+                return HttpResponseRedirect(url) 
+            
     return render(request, 'store/product_detail.html', {
         'product': product,
         'related_products': related_products,
@@ -193,7 +209,7 @@ def product_detail(request, category_slug, slug):
         'questions': questions,
         'favorite': favorite,
         'unanswered_question': unanswered_question,
-        'average_rating': average_rating
+        'average_rating': product.average_rating
     })
 
 def store_search(request):

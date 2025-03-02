@@ -1,4 +1,5 @@
 {% extends 'base/base.html'%}
+{% load static %}
 
 {% block title %}Confirmed{% endblock %}
 {% block content %}
@@ -15,8 +16,14 @@
     </h2>
   </div>
 </div>
+
 {% endblock %}
 
 {% block scripts %}
-<script src="{% static 'js/store/order_confirmed.js' %}"></script>
+<script>
+  var homepageUrl = "{% url 'base:homepage' %}";
+  setTimeout(function(){
+    window.location.href = homepageUrl;
+  }, 3000);
+</script>
 {% endblock %}

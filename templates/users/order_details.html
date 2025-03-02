@@ -1,4 +1,4 @@
-{% extends 'main/base.html' %}
+{% extends 'base/base.html' %}
 
 {% block title %} Order Detail - {{ order_item.id }} {% endblock %}
 
@@ -23,26 +23,26 @@
             <div class="w-full flex justify-center ">
                 <p class="text-orange-500 font-medium">{{ order_item.product.title }}</p>
                 <div class="flex absolute mt-8">
-                    Sipariş verilen adet: <p class="ml-2 font-bold ml-1 text-sky-600">{{ order_item.quantity }}</p>
+                    Ordered quantity: <p class="ml-2 font-bold ml-1 text-sky-600">{{ order_item.quantity }}</p>
                 </div>
                 <div class="flex absolute mt-24">
-                    Sipariş veren kişi: '<p class="font-bold ml-1 mr-1 text-red-400">{{ order_item.order.first_name }}
+                    Customer: '<p class="font-bold ml-1 mr-1 text-red-400">{{ order_item.order.first_name }}
                         {{ order_item.order.last_name }}</p>'
                 </div>
                 <div class="flex absolute mt-16">
-                    Ödenen Miktar = <p class="ml-1 font-bold text-green-600">{{ order_item.price }} ₺</p>
+                    Paid Amount = <p class="ml-1 font-bold text-green-600">{{ order_item.price }}</p>
                 </div>
                 <div class="flex absolute mt-32">
-                    Adres = <p class="ml-1 font-bold">{{ order_item.order.address }} </p>
+                    Address = <p class="ml-1 font-bold">{{ order_item.order.address }} </p>
                 </div>
                 <div class="flex absolute mt-40">
-                    Şehir = <p class="mr-1 ml-1 font-bold">{{ order_item.order.city }}</p> - &nbsp
-                    Posta Kodu = <p class="ml-1 font-bold">{{ order_item.order.zipcode }} </p>
+                    City = <p class="mr-1 ml-1 font-bold">{{ order_item.order.city }}</p> - &nbsp
+                    Zip Code = <p class="ml-1 font-bold">{{ order_item.order.zipcode }} </p>
                 </div>
                 <div class="bg-orange-100 px-3 py-3 flex flex-wrap absolute mt-48 border border-orange-400">
                     <form action="." method="post" class="flex flex-wrap">
                         {% csrf_token %}
-                        ORDER STATE = <p class="mr-2 ml-2 font-bold uppercase text-orange-400 ">{{ order_item.state }}
+                        ORDER STATE = <p class="mr-2 ml-2 font-bold uppercase text-orange-400 ">{{ order_item.get_status_display }}
                         </p>
                         <select name="status"
                             class="form-control border-2 border-orange-400 bg-white text-orange-400 font-bold">

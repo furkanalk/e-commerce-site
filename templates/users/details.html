@@ -13,7 +13,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                SATICI DETAYLARI
+                SELLER DETAILS
             </p>
         </div>
         <div class="flex justify-between -mb-8 h-64">
@@ -26,9 +26,9 @@
                         d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z" />
                 </svg>
                 <div class="px-5 justify-center flex">
-                    <p class="text-center text-[32px]">NORMAL</p>
+                    <p class="text-center text-[32px]">COMMON</p>
                 </div>
-                <p class="text-[16px]">Satıcı</p>
+                <p class="text-[16px]">Seller</p>
             </div>
             {% else %}
             <div
@@ -41,7 +41,7 @@
                 <div class="px-5 justify-center flex">
                     <p class="text-center text-[32px]">PREMIUM</p>
                 </div>
-                <p class="text-[16px]">Satıcı</p>
+                <p class="text-[16px]">Seller</p>
             </div>
             {% endif %}
             <div class="w-48 h-48 bg-white mx-auto shadow-2xl flex items-center justify-center">
@@ -58,17 +58,16 @@
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                 </svg>
-                <p class="text-center text-[42px]">{{ product_count }}</p>
-                <p class="text-[16px]">Ürün Sahibi</p>
+                <p class="text-center text-[30px]">{{ product_count }}</p>
+                <p class="text-[16px] text-center">Products</p>
             </a>
         </div>
         <div class="mb-12">
             <div class="flex justify-center">
-                <p class="text-gray-400">Beyazoda satıcısı,</p>
+                <p class="text-gray-400">Whitegoods seller,</p>
             </div>
             <div class="flex justify-center ">
-                <p class="font-medium text-orange-500 uppercase bg-orange-100 rounded-lg px-2 py-2 "> {% firstof
-                    user.get_full_name user.username %} </p>
+                <p class="font-medium text-orange-500 uppercase bg-orange-100 rounded-lg px-2 py-2 "> {% firstof user.get_full_name user.username %} </p>
             </div>
         </div>
 
@@ -83,7 +82,7 @@
                         </svg>
 
                         <h5 class="text-lg font-bold text-orange-400 font-bold mb-4">{{ comment_count }}</h5>
-                        <h6 class="font-medium text-gray-500">Yorum Yazılmış</h6>
+                        <h6 class="font-medium text-gray-500">Comments</h6>
                         <hr class="absolute right-0 top-0 w-px bg-gray-200 h-full hidden lg:block" />
                     </div>
 
@@ -94,7 +93,7 @@
                                 d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
                         </svg>
                         <h5 class="text-lg font-bold text-pink-500 font-bold mb-4">{{ question_count }}</h5>
-                        <h6 class="font-medium text-gray-500">Soru Cevaplamış</h6>
+                        <h6 class="font-medium text-gray-500">Questions Answered</h6>
                         <hr class="absolute right-0 top-0 w-px bg-gray-200 h-full hidden lg:block" />
                     </div>
 
@@ -106,7 +105,7 @@
                         </svg>
 
                         <h5 class="text-lg font-bold text-blue-600 font-bold mb-4">{{ total_sold }}</h5>
-                        <h6 class="font-medium text-gray-500">Adet Satmış</h6>
+                        <h6 class="font-medium text-gray-500">Sold Amount</h6>
                         <hr class="absolute right-0 top-0 w-px bg-gray-200 h-full hidden lg:block" />
                     </div>
 
@@ -123,7 +122,7 @@
                             Henüz puanlanmamış
                             {% endif %}
                         </h5>
-                        <h6 class="font-medium text-gray-500 mb-0">Güven Oranı</h6>
+                        <h6 class="font-medium text-gray-500 mb-0">Trust Rate</h6>
                     </div>
                 </div>
             </section>

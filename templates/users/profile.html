@@ -1,10 +1,7 @@
 {% extends 'base/base.html' %}
 
 {% block title %} My Account {% endblock %}
-
 {% block content %}
-<!--<img src = "{{ profilim }}" width="150" height="500" class="ml-auto mr-auto -mt-2"></img>-->
-
 <div class="py-2">
   <div class="p-8 bg-white shadow">
     <div class="grid grid-cols-1 md:grid-cols-3">
@@ -116,19 +113,19 @@
         <div class="block rounded-lg bg-white p-6">
           <div class="bg-gray-50 px-3 py-3">
             <div class="flex justify-center">
-              <p class="text-orange-400 text-center font-bold">Kullanıcı adınız:</p>
+              <p class="text-orange-400 text-center font-bold">Nickname:</p>
               <p class="ml-2 text-black font-extrabold">{{ user.username }}</p>
             </div>
             <div class="flex justify-center">
-              <p class="text-orange-400 text-center font-bold">İsminiz:</p>
+              <p class="text-orange-400 text-center font-bold">Name:</p>
               <p class="ml-2 text-black font-extrabold">{{ user.first_name }}</p>
             </div>
             <div class="flex justify-center">
-              <p class="text-orange-400 text-center font-bold">Soy isminiz:</p>
+              <p class="text-orange-400 text-center font-bold">Surname:</p>
               <p class="ml-2 text-black font-extrabold">{{ user.last_name }}</p>
             </div>
             <div class="flex justify-center">
-              <p class="text-orange-400 text-center font-bold">E-Mail Adresiniz:</p>
+              <p class="text-orange-400 text-center font-bold">E-Mail:</p>
               <p class="ml-2 text-black font-extrabold">{{ user.email }}</p>
             </div>
             <div class="mt-5 mb-2 justify-center flex">
@@ -158,88 +155,5 @@
   </div>
 </div>
 
-{% endblock %}
-
-{% block bilgi %}
-
-<div class="border-t border-b -mt-2 bg-gray-200">
-  <div class="grid grid-cols-1 md:lg:xl:grid-cols-3 group bg-white shadow-xl shadow-neutral-100 border ">
-    <div class="p-10 flex flex-col items-center text-center group md:lg:xl:border-r hover:bg-slate-50 cursor-pointer">
-      <img src="{{ w }}" style="height: 80px">
-      <p class="text-xl font-medium text-slate-700 mt-3">Beyazoda.com</p>
-      <p class="mt-2 text-sm text-slate-500">En güvenilir online beyaz eşya pazarı!</p>
-    </div>
-
-    <div class="p-10 flex flex-col items-center text-center group  md:lg:xl:border-r hover:bg-slate-50 cursor-pointer">
-      <span class="p-5 rounded-full bg-orange-100 text-white"><svg class="h-10 w-10 text-orange-400" width="24"
-          height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-          stroke-linejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z" />
-          <line x1="3" y1="21" x2="21" y2="21" />
-          <path d="M3 7v1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1h-18l2 -4h14l2 4" />
-          <path d="M5 21v-10.15" />
-          <path d="M19 21v-10.15" />
-          <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" />
-        </svg></span>
-      <p class="text-xl font-medium text-slate-700 mt-3">Pazarınız Hazır</p>
-      <p class="mt-2 text-sm text-slate-500">Kendi pazarınız, kendi kurallarınız.</p>
-    </div>
-
-    <div class="p-10 flex flex-col items-center text-center group hover:bg-slate-50 cursor-pointer">
-      <span class="p-5 rounded-full bg-blue-500 text-white"><svg class="h-10 w-10 text-teal-400" viewBox="0 0 24 24"
-          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-          <polyline points="22 4 12 14.01 9 11.01" />
-        </svg>
-      </span>
-      <p class="text-xl font-medium text-slate-700 mt-3">Güvenilir Ticaret</p>
-      <p class="mt-2 text-sm text-slate-500">Müşteri memnuniyeti önceliğimizdir.
-      </p>
-    </div>
-  </div>
-  {% if request.user.user_profiles.premium_mu == 1 %}
-  <div class="w-full bg-[#8abcd7] shadow-xl shadow-blue-400 py-10 px-20 flex justify-between items-center">
-    <p class=" text-white"> <span class="text-4xl font-medium text-center">Beyazoda.com ailesi olarak size teşekkür
-        ediyoruz!</span> <br> <span class="text-lg">İyi ki varsınız&nbsp;{% firstof user.get_full_name user.username
-        %}&nbsp;!</span></p>
-  </div>
-  {% else %}
-  {% if premium_basvurdu is None %}
-  {% if request.user.user_profiles.satici_mi == 1 %}
-  <div class="w-full bg-purple-600 shadow-xl shadow-purple-400 py-10 px-20 flex justify-between items-center">
-    <p class=" text-white"> <span class="text-4xl font-medium">Premium mu olmak istiyorsunuz?</span> <br> <span
-        class="text-lg">Koşulları görmek için başvurun! </span></p>
-    <a href="{% url 'premium_basvuru' %}"
-      class="px-5 py-3  font-medium text-slate-700 shadow-xl hover:bg-white duration-150 bg-orange-300">HEMEN BAŞVURUN
-    </a>
-  </div>
-  {% else %}
-  {% if satici_basvurdu is None %}
-  <div class="w-full bg-[#8abcd7] shadow-xl shadow-blue-200 py-10 px-20 flex justify-between items-center">
-    <p class=" text-white"> <span class="text-4xl font-medium">Satıcı mı olmak istiyorsunuz?</span> <br> <span
-        class="text-lg">Tek yapmanız gereken başvuru formunu doldurmak! </span></p>
-    <a href="{% url 'satici_basvuru' %}"
-      class="px-5 py-3  font-medium text-slate-700 shadow-xl  hover:bg-white duration-150  bg-orange-300">HEMEN BAŞVURUN
-    </a>
-  </div>
-  {% else %}
-  <div class="w-full bg-[#8abcd7] shadow-xl shadow-blue-200 py-10 px-20 flex justify-between items-center">
-    <p class=" text-white"> <span class="text-4xl font-medium">Satıcı olmak için başvurdunuz!</span> <br> <span
-        class="text-lg">Başvuru formunuz değerlendiriliyor. </span></p>
-    <button class="px-5 py-3  font-medium text-slate-700 shadow-xl  hover:bg-white duration-150 bg-orange-300"
-      disabled>ONAY BEKLİYOR </button>
-  </div>
-  {% endif %}
-  {% endif %}
-  {% else %}
-  <div class="w-full bg-purple-600 shadow-xl shadow-purple-400 py-10 px-20 flex justify-between items-center">
-    <p class=" text-white"> <span class="text-4xl font-medium">Premium olmak için başvurdunuz!</span> <br> <span
-        class="text-lg">Başvurunuz değerlendiriliyor. </span></p>
-    <button class="px-5 py-3  font-medium text-slate-700 shadow-xl  hover:bg-white duration-150 bg-orange-300"
-      disabled>ONAY BEKLİYOR </button>
-  </div>
-  {% endif %}
-  {% endif %}
-</div>
-
+{% include 'base/includes/status_banner.html' %}
 {% endblock %}

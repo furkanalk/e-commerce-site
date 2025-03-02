@@ -1,6 +1,6 @@
 {% extends 'base/base.html' %}
 {% load widget_tweaks %}
-<!--{% block title %} {{ title }} {% endblock %}-->
+{% block title %} Edit Product {% endblock %}
 
 {% block content %}
 <div class="bg-gray-100 shadow-lg rounded-lg my-4 -mr-1 px-4 py-4 w-full relative">
@@ -13,19 +13,19 @@
                 <a href="#tabs-home3"
                     class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:bg-neutral-100 focus:isolate data-[te-nav-active]:border-orange-400 data-[te-nav-active]:text-orange-400 dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
                     id="tabs-home-tab3" data-te-toggle="pill" data-te-target="#tabs-home3" data-te-nav-active role="tab"
-                    aria-controls="tabs-home3" aria-selected="true">DÜZENLE</a>
+                    aria-controls="tabs-home3" aria-selected="true">EDIT</a>
             </li>
             <li role="presentation">
                 <a href="#tabs-profile3"
                     class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate  hover:bg-neutral-100 focus:isolate data-[te-nav-active]:border-orange-400 data-[te-nav-active]:text-orange-400 dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
                     id="tabs-profile-tab3" data-te-toggle="pill" data-te-target="#tabs-profile3" role="tab"
-                    aria-controls="tabs-profile3" aria-selected="false">SORULAR</a>
+                    aria-controls="tabs-profile3" aria-selected="false">QUESTIONS</a>
             </li>
             <li role="presentation">
                 <a href="#tabs-messages3"
                     class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate  hover:bg-neutral-100 focus:isolate data-[te-nav-active]:border-orange-400 data-[te-nav-active]:text-orange-400 dark:text-neutral-400 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400"
                     id="tabs-messages-tab3" data-te-toggle="pill" data-te-target="#tabs-messages3" role="tab"
-                    aria-controls="tabs-messages3" aria-selected="false">YORUMLAR</a>
+                    aria-controls="tabs-messages3" aria-selected="false">COMMENTS</a>
             </li>
         </ul>
     </div>
@@ -41,15 +41,15 @@
                 <div class="flex justify-between">
                     <button
                         class="hover:bg-white hover:border hover:border-orange-400 duration-500 hover:text-orange-400 px-12 py-4 bg-orange-400 text-white"
-                        type="submit" name="duzenle">Kaydet</button>
+                        type="submit" name="duzenle">Submit</button>
                     {% if product %}
                     <a href="{% url 'users:delete_product' product.id %}"
-                        class="hover:bg-white hover:border inline-block hover:border-orange-400 duration-500 hover:text-red-400 px-10 py-4 bg-red-400 text-white">Ürünü
-                        Sil</a>
+                        class="hover:bg-white hover:border inline-block hover:border-orange-400 duration-500 hover:text-red-400 px-10 py-4 bg-red-400 text-white">
+                        Delete Product</a>
                     {% else %}
                     <a href="/my-marketplace/"
                         class="hover:bg-white hover:border inline-block hover:border-orange-400 duration-500 hover:text-red-400 px-12 py-4 bg-red-400 text-white"
-                        type="submit" name="iptal">İptal Et</a>
+                        type="submit" name="iptal">Cancel</a>
                     {% endif %}
                 </div>
             </form>
@@ -83,7 +83,7 @@
                                 required="required" name="answer" placeholder="Soruyu cevaplayınız."></textarea>
                             <button
                                 class="mt-2 px-5 py-3 bg-orange-400 text-white hover:bg-white hover:text-orange-400 border border-orange-400 duration-500 justify-between flex primary-btn"
-                                type="submit" name="theanswer" value="{{ question.id }}"> Cevabı gönder</button>
+                                type="submit" name="theanswer" value="{{ question.id }}"> Submit answer</button>
                         </form>
                     </div>
                     {% endif %}
@@ -92,7 +92,7 @@
             {% endfor %}
             {% else %}
             <div class="mt-10 flex justify-center">
-                <p class="bg-gray-200 justify-center px-4 py-3 rounded-full "> Henüz soru soran yok. </p>
+                <p class="bg-gray-200 justify-center px-4 py-3 rounded-full "> No questions yet. </p>
             </div>
             {% endif %}
         </div>
@@ -152,7 +152,7 @@
             {% endfor %}
             {% else %}
             <div class="mt-10 flex justify-center">
-                <p class="bg-gray-200 justify-center px-4 py-3 rounded-full "> Henüz yorum yapan yok. </p>
+                <p class="bg-gray-200 justify-center px-4 py-3 rounded-full "> No comments yet. </p>
             </div>
             {% endif %}
         </div>
