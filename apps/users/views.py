@@ -194,7 +194,7 @@ def edit_product(request, pk):
             question_id = int(qvalue)
             question = get_object_or_404(QuestionAnswer, id=question_id)
             question.answer = request.POST.get('answer')
-            question.answered = QuestionAnswer.STATUS_CHOICES[1][0]
+            question.answered = True
             question.save(update_fields=['answer', 'answered'])
 
             product.question_count += 1
@@ -203,7 +203,7 @@ def edit_product(request, pk):
     if value:
         for comment in comments:
             if int(value) == comment.id:
-                comment.reported = Comments.STATUS_CHOICES[1][0]
+                comment.reported = True
                 comment.save()
 
     return render(request, 'users/edit_product.html', {
@@ -251,18 +251,14 @@ def user_profile(request):
 def my_products(request):
     product_id = request.GET.get('product_id')
     products_owned = Product.objects.filter(user=request.user, status=Product.STATUS_CHOICES[2][0])
-    comments = Comments.objects.filter(product_id=product_id, status=Comments.STATUS_CHOICES[1][0])
-    questions = QuestionAnswer.objects.filter(product_id=product_id, status=QuestionAnswer.STATUS_CHOICES[1][0])
-
-    average_rating = round(
-        sum(comment.rate for comment in comments) / len(comments), 1) if comments else 0
-
+    comments = Comments.objects.filter(product_id=product_id, status=True)
+    questions = QuestionAnswer.objects.filter(product_id=product_id, status=True)
+    
     return render(request, 'users/my_products.html', {
         'products_owned': products_owned,
         'comments': comments,
         'questions': questions,
         'question_count': questions.count(),
-        'average': average_rating,
         'comment_count': comments.count(),
     })
   

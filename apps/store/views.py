@@ -149,7 +149,7 @@ def product_detail(request, category_slug, slug):
     product = get_object_or_404(Product, slug=slug, status=2)
     category = Category.objects.get(slug=category_slug)
     related_products = Product.objects.filter(category_id=category.id)
-    comments = Comments.objects.filter(product_id=product.id, status=True).order_by('-created_at')
+    comments = Comments.objects.filter(product_id=product.id).order_by('-created_at')
     questions = QuestionAnswer.objects.filter(product_id=product.id, status=True).order_by('-id')
 
     try:
@@ -181,7 +181,8 @@ def product_detail(request, category_slug, slug):
                 QuestionAnswer.objects.create(
                     user=request.user,
                     product=product,
-                    question=form.cleaned_data['question']
+                    question=form.cleaned_data['question'],
+                    status=True
                 )
                 messages.success(request, "Your question has been submitted.")
                 return HttpResponseRedirect(url)

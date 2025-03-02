@@ -73,6 +73,9 @@ class Product(models.Model):
     def get_display_price(self):
         return f"${self.price:.2f}"
     
+    def how_much_earned(self):
+        return f"${self.total_sold * self.price}"
+    
 class Order(models.Model):
     class Meta:
         verbose_name_plural = 'Orders'

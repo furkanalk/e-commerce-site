@@ -58,11 +58,11 @@
         {% endif %}
         <div class="absolute px-2 py-auto flex">
           <div class="ml-3 justify-center py-auto">
-            <i class="fa fa-star {% if average_rating < 1 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
-            <i class="fa fa-star {% if average_rating < 2 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
-            <i class="fa fa-star {% if average_rating < 3 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
-            <i class="fa fa-star {% if average_rating < 4 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
-            <i class="fa fa-star {% if average_rating < 5 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+            <i class="fa fa-star {% if average_rating < 1 %}text-gray-400{% else %}text-orange-400{% endif %}"></i>
+            <i class="fa fa-star {% if average_rating < 2 %}text-gray-400{% else %}text-orange-400{% endif %}"></i>
+            <i class="fa fa-star {% if average_rating < 3 %}text-gray-400{% else %}text-orange-400{% endif %}"></i>
+            <i class="fa fa-star {% if average_rating < 4 %}text-gray-400{% else %}text-orange-400{% endif %}"></i>
+            <i class="fa fa-star {% if average_rating < 5 %}text-gray-400{% else %}text-orange-400{% endif %}"></i>
         </div>
         
         </div>
@@ -260,22 +260,32 @@
         <div class="bg-gray-50">
           <form class="review-form" action="{% url 'store:product_detail' product.category.slug product.slug%}"
             method="POST">
-            {% csrf_token %}
-            <div class="form-group flex justify-center px-5 py-3">
-              <textarea class="w-1/2 py-3 px-6 flex outline-none input bg-gray-200" name="question" id="id_question"
-                placeholder="Do you have a question?"></textarea>
-            </div>
-            {% if user.id is not None %}
-            <div class="flex justify-center">
-              <button
-                class="mt-2 px-5 py-3 bg-orange-400 text-white hover:bg-white hover:text-orange-400 border border-orange-400 duration-500 justify-between flex primary-btn"
-                name="ask_question"> Send your question</button>
-            </div>
-            {% else %}
-            <div class="flex justify-center">
+          {% csrf_token %}
+          <div class="form-group flex justify-center px-5 py-3">
+            <textarea class="w-1/2 py-3 px-6 flex outline-none input bg-gray-200" name="question" id="id_question"
+              placeholder="Do you have a question?"></textarea>
+          </div>
+          {% if user.id is not None %}
+              <div class="flex justify-center">
+                  {% if unanswered_question %}
+                      <button
+                          class="mt-2 px-5 py-3 bg-gray-400 text-white border border-gray-400 duration-500 justify-between flex primary-btn cursor-not-allowed"
+                          name="ask_question" disabled>
+                          You need to wait for your previous question to be answered!
+                      </button>
+                  {% else %}
+                      <button
+                          class="mt-2 px-5 py-3 bg-orange-400 text-white hover:bg-white hover:text-orange-400 border border-orange-400 duration-500 justify-between flex primary-btn"
+                          name="ask_question">
+                          Send your question
+                      </button>
+                  {% endif %}
+              </div>
+          {% else %}
+          <div class="flex justify-center">
               <p class="px-2 py-2 bg-orange-400 text-white w-auto rounded-lg">Sign up to ask questions!</p>
-            </div>
-            {% endif %}
+          </div>
+          {% endif %}
           </form>
           <div class="py-3"></div>
           {% if questions %}
@@ -304,7 +314,7 @@
         </div>
         <div class="bg-gray-50 mt-2">
           <div class="py-3 bg-white">
-            {% if no_answer is not None %}
+            {% if user.id is not None %}
             <div class="flex justify-center">
               <div
                 class="flex justify-center rounded-lg shadow-lg bg-gray-400 w-1/2 py-2 text-white text-medium text-xl">
@@ -319,7 +329,7 @@
             {% endif %}
             {% if questions %}
               {% for question in questions %}
-                {% if question.answered == "False" and question.user_id == request.user.id %}
+                {% if not question.answered and question.user_id == request.user.id %}
                 <div class="bg-gray-100 rounded-lg py-5 mb-5 px-5">
                   <div class="w-1/2 bg-gray-200 rounded-full px-3 py-2">
                     <p> {{ question.question }} </p>
@@ -376,15 +386,14 @@
             <div>
               <div class="flex justify-between">
                 <div>
-                  <i class="fa fa-star {% if average_rating < 1 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
-                  <i class="fa fa-star {% if average_rating < 2 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
-                  <i class="fa fa-star {% if average_rating < 3 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
-                  <i class="fa fa-star {% if average_rating < 4 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
-                  <i class="fa fa-star {% if average_rating < 5 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+                  <i class="fa fa-star {% if comment.rate < 1 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+                  <i class="fa fa-star {% if comment.rate < 2 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+                  <i class="fa fa-star {% if comment.rate < 3 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+                  <i class="fa fa-star {% if comment.rate < 4 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
+                  <i class="fa fa-star {% if comment.rate < 5 %}text-gray-400{% else %}text-orange-500{% endif %}"></i>
                 </div>
                 <div>
-                  <p class="text-gray-600 italic "> ' {% firstof comment.user.get_full_name
-                    comment.user.username %} '</p></a>
+                  <p class="text-gray-600 italic "> ' {% firstof comment.user.get_full_name comment.user.username %} '</p></a>
                 </div>
               </div>
             </div>

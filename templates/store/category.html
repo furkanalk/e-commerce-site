@@ -74,7 +74,7 @@
 <!-- PRODUCTS -->
 {% if product.user.user_profiles.is_premium %}
 {% include 'store/includes/premium_products.html' %}
-{% elif product.user.user_profiles.is_seller %}
+{% else %}
 {% include 'store/includes/products.html' %}
 {% endif %}
 <!-- /PRODUCTS -->
